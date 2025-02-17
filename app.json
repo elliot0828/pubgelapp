@@ -9,13 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iambykim.pel",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.iambykim.pel"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +36,31 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/AgencyFB-Bold.ttf",
+            "./assets/fonts/HyperwaveThree.otf",
+            "./assets/fonts/SpaceMono-Regular.ttf",
+            "./assets/fonts/Pretendard-Black.otf",
+            "./assets/fonts/Pretendard-Bold.otf",
+            "./assets/fonts/Pretendard-ExtraBold.otf",
+            "./assets/fonts/Pretendard-ExtraLight.otf",
+            "./assets/fonts/Pretendard-Light.otf",
+            "./assets/fonts/Pretendard-Medium.otf",
+            "./assets/fonts/Pretendard-Regular.otf",
+            "./assets/fonts/Pretendard-SemiBold.otf",
+            "./assets/fonts/Pretendard-Thin.otf",
+            "./assets/fonts/PUBGBattlegrounds-Textured.ttf",
+            "./assets/fonts/WinnerSans-CompBold.otf",
+            "./assets/fonts/WinnerSans-CompRegular.otf",
+            "./assets/fonts/WinnerSans-WideBold.otf",
+            "./assets/fonts/WinnerSans-WideRegular.otf",
+            "./assets/fonts/BrigendsExpanded.otf"
+          ]
         }
       ]
     ],
