@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   platformButton: {
     backgroundColor: "rgb(241,249,88)",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     width: "24%",
     alignItems: "center",
   },
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
 
   input: {
     textAlign: "center",
-    width: 240,
+    width: 200,
     height: 40,
     borderColor: "rgb(241,249,88)",
     borderRadius: 5,
@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: width,
     backgroundColor: "black",
+    paddingHorizontal: 15,
   },
   title: {
     fontSize: 24,

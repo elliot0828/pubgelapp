@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   Text,
@@ -7,7 +7,6 @@ import {
   StyleSheet,
   BackHandler,
 } from "react-native";
-import * as Network from "expo-network";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import Profile from "./screens/profile";
@@ -15,91 +14,106 @@ import Gpt from "./screens/gpt";
 import Tool from "./screens/tool";
 import Esports from "./screens/esports";
 import PlayerStats from "./screens/playerstats";
+import Tournaments from "./screens/tournaments";
+import tournamentDetail from "./screens/tournamentDetail";
 import Chat from "./screens/chat";
 import Home from "./screens/home";
+import * as Network from "expo-network";
+import { useFonts } from "expo-font";
 const Tab = createBottomTabNavigator();
+import * as SplashScreen from "expo-splash-screen";
 const Stack = createStackNavigator();
-
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="PUBG"
+      initialRouteName="홈"
       screenOptions={{
         tabBarStyle: {
           backgroundColor: "black", // 탭 배경색 설정
-          borderTopWidth: 0.2,
+          borderTopWidth: 0,
         },
         tabBarActiveTintColor: "rgb(241,249,88)", // 활성화된 탭 색상 (빨간색)
         tabBarInactiveTintColor: "#808080", // 비활성화된 탭 색상 (회색)
       }}
     >
       <Tab.Screen
-        name="STAT"
-        component={Profile}
-        options={{ headerShown: false }}
+        name="홈"
+        component={Esports}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome6 name="house" size={20} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
+        name="토너먼트"
+        component={Tournaments}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome6 name="trophy" size={20} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="전적"
+        component={Profile}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome6 name="chart-simple" size={20} color={color} />
+          ),
+        }}
+      />
+      {/* <Tab.Screen
         name="PUBG"
         component={Home}
         options={{
           headerShown: false,
           tabBarActiveTintColor: "#ffa200",
         }}
-      />
+      /> */}
+
       <Tab.Screen
-        name="ESPORTS"
-        component={Esports}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="TOOL"
+        name="도구"
         component={Tool}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome6 name="wrench" size={20} color={color} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
 };
 
 const App = () => {
-  const [isConnected, setIsConnected] = useState(null);
-
+  const [appReady, setAppReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    "PUBGBattlegrounds-Textured": require("../assets/fonts/PUBGBattlegrounds-Textured.ttf"),
+    "WinnerSans-CompBold": require("../assets/fonts/WinnerSans-CompBold.otf"),
+    "AgencyFB-Bold": require("../assets/fonts/AgencyFB-Bold.ttf"),
+    "Pretendard-Regular": require("../assets/fonts/Pretendard-Regular.otf"),
+    "Pretendard-Bold": require("../assets/fonts/Pretendard-Bold.otf"),
+    BrigendsExpanded: require("../assets/fonts/BrigendsExpanded.otf"),
+  });
   useEffect(() => {
-    const checkConnection = async () => {
-      const networkState = await Network.getNetworkStateAsync();
-      setIsConnected(networkState.isConnected);
+    async function prepareApp() {
+      setAppReady(true);
+      await SplashScreen.hideAsync(); // 스플래시 숨기기
+    }
 
-      // 연결이 안 되어 있을 경우
-      if (!networkState.isConnected) {
-        Alert.alert(
-          "인터넷 연결 오류",
-          "인터넷에 연결되지 않았습니다. 앱을 종료합니다.",
-          [
-            {
-              text: "확인",
-              onPress: () => {
-                // 앱 종료
-                BackHandler.exitApp();
-              },
-            },
-          ]
-        );
-      }
-    };
+    if (fontsLoaded) {
+      prepareApp();
+    }
+  }, [fontsLoaded]);
 
-    checkConnection();
-
-    // 앱이 포그라운드로 돌아올 때 네트워크 상태 확인
-    const unsubscribe = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        checkConnection();
-        return true;
-      }
-    );
-
-    // Clean up
-    return () => unsubscribe.remove();
-  }, []);
+  if (!appReady) {
+    return null; // 스플래시 화면 유지
+  }
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -109,6 +123,7 @@ const App = () => {
       />
       <Stack.Screen name="PlayerStats" component={PlayerStats} />
       <Stack.Screen name="Gpt" component={Gpt} />
+      <Stack.Screen name="TournamentDetail" component={tournamentDetail} />
     </Stack.Navigator>
   );
 };

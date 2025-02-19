@@ -50,7 +50,7 @@ const Home = ({ navigation }) => {
           });
           const latestPatchNote = patchNoteData.slice(-3);
           setpatchData(latestPatchNote);
-          console.log("패치노트 데이터:", latestPatchNote); // 여기서 데이터를 확인해보세요
+          //console.log("패치노트 데이터:", latestPatchNote); // 여기서 데이터를 확인해보세요
         }
 
         const announceQuery = await getDocs(collection(db, "announcement"));
@@ -63,7 +63,7 @@ const Home = ({ navigation }) => {
           });
           const latestAnnounce = announceData.slice(-5);
           setannounceData(latestAnnounce);
-          console.log("패치노트 데이터:", latestAnnounce); // 여기서 데이터를 확인해보세요
+          // console.log("패치노트 데이터:", latestAnnounce); // 여기서 데이터를 확인해보세요
         }
 
         const devQuery = await getDocs(collection(db, "devLetter"));
@@ -76,7 +76,7 @@ const Home = ({ navigation }) => {
           });
           const latestDev = devData.slice(0, 5);
           setdevData(latestDev);
-          console.log("패치노트 데이터:", latestDev); // 여기서 데이터를 확인해보세요
+          // console.log("패치노트 데이터:", latestDev); // 여기서 데이터를 확인해보세요
         }
       } catch (e) {
         console.error("Error getting documents: ", e);

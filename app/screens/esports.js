@@ -11,12 +11,13 @@ import {
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { Linking } from "react-native";
-import initFirebase from "../firebase"; // 경로는 파일 구조에 맞게 수정
+
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useFonts } from "expo-font";
 import { ScrollView } from "react-native-gesture-handler";
 // import { SafeAreaView } from "react-native-safe-area-context";
 const { width, height } = Dimensions.get("window");
+import initFirebase from "../firebase"; // 경로는 파일 구조에 맞게 수정
 const { app, auth, db } = initFirebase();
 
 const Esports = ({ navigation }) => {
@@ -61,7 +62,7 @@ const Esports = ({ navigation }) => {
           });
           const latestEsports = esportsData.slice(-5);
           setesportsData(latestEsports);
-          console.log("이스포츠 데이터:", latestEsports); // 여기서 데이터를 확인해보세요
+          // console.log("이스포츠 데이터:", latestEsports); // 여기서 데이터를 확인해보세요
         }
 
         const rankingQuery = await getDocs(
@@ -76,7 +77,7 @@ const Esports = ({ navigation }) => {
             prankingData.push({ id: doc.id, ...doc.data() });
           });
           setrankingData(prankingData);
-          console.log("이스포츠 데이터:", prankingData); // 여기서 데이터를 확인해보세요
+          //  console.log("이스포츠 데이터:", prankingData); // 여기서 데이터를 확인해보세요
         }
 
         const ytQuery = await getDocs(
@@ -95,7 +96,7 @@ const Esports = ({ navigation }) => {
             ytData.push({ id: doc.id, ...doc.data() });
           });
           setytData(ytData);
-          console.log("영상 데이터:", ytData); // 여기서 데이터를 확인해보세요
+          //   console.log("영상 데이터:", ytData); // 여기서 데이터를 확인해보세요
         }
       } catch (e) {
         console.error("Error getting documents: ", e);
@@ -207,12 +208,19 @@ const Esports = ({ navigation }) => {
               fontSize: 20,
               padding: 10,
               color: "rgb(241,249,88)",
+              width: width * 0.9,
             }}
           >
             파워랭킹
           </Text>
         </View>
-        <View style={{ backgroundColor: "rgb(243,243,243)", padding: 15 }}>
+        <View
+          style={{
+            backgroundColor: "rgb(243,243,243)",
+            padding: 15,
+            marginHorizontal: 15,
+          }}
+        >
           <View style={{ flexDirection: "row", marginBottom: 15 }}>
             <Text style={styles.rankTypeR}>RANK</Text>
             <Text style={styles.rankTypeT}>TEAM</Text>
@@ -357,10 +365,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#000",
-    width: width,
+    paddingVertical: 15,
+
+    // width: width,
   },
   scrollContainer: {
-    padding: 15,
+    // padding: 15,
+    alignItems: "center",
     paddingTop: 0,
     paddingBottom: 50,
   },
@@ -408,7 +419,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  tableContainer: { marginTop: 5, padding: 5 },
+  tableContainer: {
+    marginTop: 5,
+    padding: 10,
+    paddingTop: 5,
+    alignItems: "center",
+  },
   tableRow: { flexDirection: "row" },
   tableCell: {
     width: "20%",
