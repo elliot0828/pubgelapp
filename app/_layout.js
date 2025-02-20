@@ -119,11 +119,23 @@ const App = () => {
       <Stack.Screen
         name="돌아가기"
         component={TabNavigator}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen name="PlayerStats" component={PlayerStats} />
       <Stack.Screen name="Gpt" component={Gpt} />
-      <Stack.Screen name="TournamentDetail" component={tournamentDetail} />
+      <Stack.Screen
+        name="TournamentDetail"
+        options={{
+          headerStyle: {
+            backgroundColor: "black", // 헤더 배경 색
+            title: "토너먼트 상세보기",
+          },
+          headerTintColor: "rgb(241,249,88)",
+        }}
+        component={tournamentDetail}
+      />
     </Stack.Navigator>
   );
 };

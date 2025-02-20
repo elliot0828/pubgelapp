@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Stand United",
-    "slug": "stand-united",
+    "slug": "pel",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon/ios/AppIcon~ios-marketing.png",
@@ -79,6 +79,7 @@
       "eas": {
         "projectId": "71198e3c-3d89-428b-995c-a823937a407c"
       }
-    }
+    },
+    "owner": "iambykim"
   }
 }

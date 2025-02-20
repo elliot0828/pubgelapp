@@ -146,7 +146,12 @@ const Tournaments = () => {
         >
           <Image
             source={{ uri: item.tournamentLogoUrl }}
-            style={{ width: 50, height: 50, marginRight: 10 }}
+            style={{
+              width: width * 0.1,
+              height: undefined,
+              aspectRatio: 1 / 1,
+              marginRight: 10,
+            }}
           />
           <View style={{ flex: 1 }}>
             <Text
@@ -191,10 +196,22 @@ const Tournaments = () => {
           </TouchableOpacity>
         </View>
       ) : (
-        <View>
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <Image
             source={{ uri: item.tournamentLogoUrl }}
-            style={{ width: 50, height: 50, marginRight: 10 }}
+            style={{
+              width: width * 0.1,
+              height: undefined,
+              aspectRatio: 1 / 1,
+              marginRight: 10,
+            }}
           />
           <View>
             <Text
@@ -230,7 +247,7 @@ const Tournaments = () => {
             color: "rgb(241,249,88)",
           }}
         >
-          Tournament Calendar
+          Tournament{"\n"}Calendar
         </Text>
       </View>
       <View>
@@ -254,6 +271,13 @@ const Tournaments = () => {
               data={selectedTournaments}
               renderItem={renderTournamentItem}
               keyExtractor={(item) => item.matchScheduleId}
+              style={{ paddingBottom: 50, height: height * 0.35 }}
+              contentContainerStyle={{ paddingBottom: 50 }}
+              // ListFooterComponent={
+              //   <View
+              //     style={{ height: 150, width: width, backgroundColor: "red" }}
+              //   />
+              // } // 리스트 끝에 여백 추가
             />
           ) : (
             <Text style={styles.noScheduleText}>
@@ -271,17 +295,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
     paddingTop: 50,
+
     paddingHorizontal: 20,
   },
   scheduleContainer: {
     marginTop: 5,
     paddingTop: 10,
+
+    paddingHorizontal: 15,
+    marginBottom: 10,
   },
 
   tournamentTitle: {
     fontFamily: "Pretendard-Bold",
     color: "white",
     fontSize: 16,
+    maxWidth: width * 0.7,
   },
   tournamentItem: {
     paddingVertical: 10,
@@ -289,6 +318,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#1A1A1A",
     borderRadius: 10,
     marginBottom: 15,
+    borderTopColor: "rgb(241,249,88)",
+    borderTopWidth: 2,
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap", // 텍스트와 버튼이 겹치지 않게 함

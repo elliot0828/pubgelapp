@@ -265,67 +265,74 @@ const PlayerStats = ({ route }) => {
                     style={{
                       borderRadius: 5,
                       flexDirection: "row",
-                      backgroundColor: "#171717",
+                      // backgroundColor: "#171717",
                     }}
                   >
-                    <View style={stats.seasonCon}>
-                      <Text style={stats.seasonTitle}>SEASON</Text>
-                      <Text style={stats.seasonNum}>
-                        {selectedSeason[selectedSeason.length - 2] +
-                          selectedSeason[selectedSeason.length - 1]}
-                      </Text>
-                    </View>
-                    <View style={stats.avgCon}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          height: "46%",
-                          boxSizing: "border-box",
-                          marginBottom: 10,
-                        }}
-                      >
-                        <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>승리</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.normal.wins}
-                          </Text>
-                        </View>
-
-                        <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>탑10</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.normal.top10s}
-                          </Text>
-                        </View>
-
-                        <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>패배</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.normal.losses}
-                          </Text>
-                        </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginHorizontal: 15,
+                      }}
+                    >
+                      <View style={stats.seasonCon}>
+                        <Text style={stats.seasonTitle}>SEASON</Text>
+                        <Text style={stats.seasonNum}>
+                          {selectedSeason[selectedSeason.length - 2] +
+                            selectedSeason[selectedSeason.length - 1]}
+                        </Text>
                       </View>
+                      <View style={stats.avgCon}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            height: "46%",
+                            boxSizing: "border-box",
+                            marginBottom: 10,
+                          }}
+                        >
+                          <View style={stats.avgStatCon}>
+                            <Text style={stats.avgStatTitle}>승리</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.normal.wins}
+                            </Text>
+                          </View>
 
-                      <View style={{ flexDirection: "row", height: "46%" }}>
-                        <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>승리 확률</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.normal.winRatio}
-                          </Text>
+                          <View style={stats.avgStatCon}>
+                            <Text style={stats.avgStatTitle}>탑10</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.normal.top10s}
+                            </Text>
+                          </View>
+
+                          <View style={stats.avgStatCon}>
+                            <Text style={stats.avgStatTitle}>패배</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.normal.losses}
+                            </Text>
+                          </View>
                         </View>
 
-                        <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>탑10 확률</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.normal.top10sRatio}
-                          </Text>
-                        </View>
+                        <View style={{ flexDirection: "row", height: "46%" }}>
+                          <View style={stats.avgStatCon}>
+                            <Text style={stats.avgStatTitle}>승리 확률</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.normal.winRatio}
+                            </Text>
+                          </View>
 
-                        <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>총 매치</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.normal.roundsPlayed}
-                          </Text>
+                          <View style={stats.avgStatCon}>
+                            <Text style={stats.avgStatTitle}>탑10 확률</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.normal.top10sRatio}
+                            </Text>
+                          </View>
+
+                          <View style={stats.avgStatCon}>
+                            <Text style={stats.avgStatTitle}>총 매치</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.normal.roundsPlayed}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -486,56 +493,62 @@ const PlayerStats = ({ route }) => {
                     style={{
                       borderRadius: 5,
                       flexDirection: "row",
-                      backgroundColor: "#171717",
                     }}
                   >
-                    <View style={stats.seasonCon}>
-                      <Text style={stats.seasonTitle}>SEASON</Text>
-                      <Text style={stats.seasonNum}>
-                        {selectedSeason[selectedSeason.length - 2] +
-                          selectedSeason[selectedSeason.length - 1]}
-                      </Text>
-                    </View>
-                    <View style={rstats.avgCon}>
-                      <View style={{ flexDirection: "row" }}>
-                        <Image
-                          source={
-                            rankImages[
-                              `${playerData.stats.ranked.currentTier.tier}-${playerData.stats.ranked.currentTier.subTier}`
-                            ]
-                          }
-                          style={rstats.tierIMG}
-                        />
-                        <View style={rstats.rp}>
-                          <Text style={rstats.rpText}>
-                            {playerData.stats.ranked.currentTier.tier}{" "}
-                            {playerData.stats.ranked.currentTier.subTier}
-                          </Text>
-                          <Text style={rstats.rpPoint}>
-                            {playerData.stats.ranked.currentRankPoint} RP
-                          </Text>
-                        </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginHorizontal: 15,
+                      }}
+                    >
+                      <View style={stats.seasonCon}>
+                        <Text style={stats.seasonTitle}>SEASON</Text>
+                        <Text style={stats.seasonNum}>
+                          {selectedSeason[selectedSeason.length - 2] +
+                            selectedSeason[selectedSeason.length - 1]}
+                        </Text>
                       </View>
-                      <View style={{ flexDirection: "row", marginTop: 5 }}>
-                        <View style={stats.avgStatCon}>
-                          <Text style={rstats.avgStatTitle}>승리</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.ranked.wins}
-                          </Text>
+                      <View style={rstats.avgCon}>
+                        <View style={{ flexDirection: "row" }}>
+                          <Image
+                            source={
+                              rankImages[
+                                `${playerData.stats.ranked.currentTier.tier}-${playerData.stats.ranked.currentTier.subTier}`
+                              ]
+                            }
+                            style={rstats.tierIMG}
+                          />
+                          <View style={rstats.rp}>
+                            <Text style={rstats.rpText}>
+                              {playerData.stats.ranked.currentTier.tier}{" "}
+                              {playerData.stats.ranked.currentTier.subTier}
+                            </Text>
+                            <Text style={rstats.rpPoint}>
+                              {playerData.stats.ranked.currentRankPoint} RP
+                            </Text>
+                          </View>
                         </View>
+                        <View style={{ flexDirection: "row", marginTop: 5 }}>
+                          <View style={stats.avgStatCon}>
+                            <Text style={rstats.avgStatTitle}>승리</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.ranked.wins}
+                            </Text>
+                          </View>
 
-                        <View style={stats.avgStatCon}>
-                          <Text style={rstats.avgStatTitle}>승리 확률</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.ranked.winRatio}
-                          </Text>
-                        </View>
+                          <View style={stats.avgStatCon}>
+                            <Text style={rstats.avgStatTitle}>승리 확률</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.ranked.winRatio}
+                            </Text>
+                          </View>
 
-                        <View style={stats.avgStatCon}>
-                          <Text style={rstats.avgStatTitle}>총 매치</Text>
-                          <Text style={stats.avgStatText}>
-                            {playerData.stats.ranked.roundsPlayed}
-                          </Text>
+                          <View style={stats.avgStatCon}>
+                            <Text style={rstats.avgStatTitle}>총 매치</Text>
+                            <Text style={stats.avgStatText}>
+                              {playerData.stats.ranked.roundsPlayed}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     </View>
@@ -1087,10 +1100,11 @@ const stats = StyleSheet.create({
   },
 
   avgCon: {
-    borderRadius: 20,
     width: "65%",
     boxSizing: "border-box",
     backgroundColor: "#171717",
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
     padding: 10,
   },
   seasonCon: {
@@ -1098,9 +1112,10 @@ const stats = StyleSheet.create({
     width: "35%",
     boxSizing: "border-box",
     alignContent: "center",
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     padding: 10,
     paddingLeft: 18,
-    borderRadius: 20,
   },
   seasonNum: {
     color: "white",
@@ -1192,10 +1207,11 @@ const rstats = StyleSheet.create({
   },
 
   avgCon: {
-    borderRadius: 20,
     width: "65%",
     boxSizing: "border-box",
     backgroundColor: "#171717",
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
     padding: 10,
   },
   seasonCon: {
@@ -1203,9 +1219,10 @@ const rstats = StyleSheet.create({
     width: "35%",
     boxSizing: "border-box",
     alignContent: "center",
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     padding: 10,
     paddingLeft: 18,
-    borderRadius: 20,
   },
   seasonNum: {
     color: "white",
@@ -1225,8 +1242,8 @@ const rstats = StyleSheet.create({
 
 const styles = StyleSheet.create({
   dropdownContainer: {
-    marginLeft: "5%",
-    width: "90%",
+    width: "80%",
+    marginLeft: "10%",
     marginBottom: 10,
     borderRadius: 10,
   },
@@ -1239,6 +1256,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
+    paddingHorizontal: 15,
     marginBottom: 15,
     justifyContent: "space-between",
   },

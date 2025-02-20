@@ -128,7 +128,7 @@ const Profile = () => {
         <Carousel
           loop
           width={width}
-          height={height * 0.35}
+          height={230}
           autoPlay={true}
           autoPlayInterval={3000}
           data={images}
@@ -160,10 +160,20 @@ const Profile = () => {
           {["steam", "kakao", "xbox", "psn"].map((plat) => (
             <TouchableOpacity
               key={plat}
-              style={styles.platformBTN}
+              style={[
+                styles.platformBTN,
+                platform === plat && styles.selectedPlatformBTN, // 선택된 경우 스타일 추가
+              ]}
               onPress={() => setPlatform(plat)}
             >
-              <Text style={styles.platformTEXT}>{plat.toUpperCase()}</Text>
+              <Text
+                style={[
+                  styles.platformTEXT,
+                  platform === plat && styles.selectedPlatformTEXT, // 선택된 경우 텍스트 색 변경
+                ]}
+              >
+                {plat.toUpperCase()}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -219,6 +229,7 @@ const styles = StyleSheet.create({
   platformTEXT: {
     color: "black",
     textAlign: "center",
+    fontFamily: "Pretendard-Regular",
   },
   ignTitle: {
     fontSize: 20,
@@ -232,7 +243,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: "rgb(241,249,88)",
     borderRadius: 5,
-    borderWidth: 1,
+    borderWidth: 2,
     paddingHorizontal: 10,
     color: "white",
     marginBottom: 10,
@@ -248,7 +259,20 @@ const styles = StyleSheet.create({
   searchText: {
     textAlign: "center",
     color: "black",
+    fontFamily: "Pretendard-Bold",
     fontSize: 16,
+  },
+  selectedPlatformBTN: {
+    backgroundColor: "black", // 선택된 버튼 색상 (파란색)
+    borderWidth: 2,
+    borderColor: "rgb(241,249,88)",
+  },
+  platformTEXT: {
+    color: "#000", // 기본 텍스트 색상
+    fontWeight: "bold",
+  },
+  selectedPlatformTEXT: {
+    color: "#fff", // 선택된 경우 텍스트 색상 (흰색)
   },
 });
 
