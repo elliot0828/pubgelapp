@@ -10,6 +10,10 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import responsiveSize from "../utils/responsiveSize";
+
+const { responsiveWidth, responsiveHeight, responsiveFontSize } =
+  responsiveSize;
 import { useNavigation } from "@react-navigation/native";
 import { Calendar } from "react-native-calendars";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
@@ -150,7 +154,7 @@ const Tournaments = () => {
               width: width * 0.1,
               height: undefined,
               aspectRatio: 1 / 1,
-              marginRight: 10,
+              marginRight: responsiveWidth(10),
             }}
           />
           <View style={{ flex: 1 }}>
@@ -174,12 +178,12 @@ const Tournaments = () => {
             onPress={() => Linking.openURL(item.liveOutLink)}
             style={{
               backgroundColor: "rgba(241,249,88,0.9)",
-              borderRadius: 5,
-              marginLeft: 10,
-              paddingVertical: 8,
-              paddingHorizontal: 12,
+              borderRadius: responsiveWidth(5),
+              marginLeft: responsiveWidth(10),
+              paddingVertical: responsiveHeight(8),
+              paddingHorizontal: responsiveWidth(12),
               // marginTop: 10,
-              maxWidth: 120, // 버튼의 최대 너비를 제한
+              maxWidth: responsiveWidth(120), // 버튼의 최대 너비를 제한
               justifySelf: "flex-start", // 버튼이 다른 내용과 잘 정렬되도록
               justifyContent: "center", // 세로 가운데 정렬
               alignItems: "center", // 세로 가운데 정렬
@@ -243,7 +247,7 @@ const Tournaments = () => {
             textAlign: "center",
             color: "white",
             fontFamily: "BrigendsExpanded",
-            fontSize: 20,
+            fontSize: responsiveFontSize(20),
             color: "rgb(241,249,88)",
           }}
         >
@@ -271,8 +275,11 @@ const Tournaments = () => {
               data={selectedTournaments}
               renderItem={renderTournamentItem}
               keyExtractor={(item) => item.matchScheduleId}
-              style={{ paddingBottom: 50, height: height * 0.35 }}
-              contentContainerStyle={{ paddingBottom: 50 }}
+              style={{
+                paddingBottom: responsiveHeight(30),
+                height: height * 0.35,
+              }}
+              contentContainerStyle={{ paddingBottom: responsiveHeight(50) }}
               // ListFooterComponent={
               //   <View
               //     style={{ height: 150, width: width, backgroundColor: "red" }}
@@ -290,67 +297,116 @@ const Tournaments = () => {
   );
 };
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "black",
+//     paddingTop: 50,
+
+//     paddingHorizontal: 20,
+//   },
+//   scheduleContainer: {
+//     marginTop: 5,
+//     paddingTop: 10,
+
+//     paddingHorizontal: 15,
+//     marginBottom: 10,
+//   },
+
+//   tournamentTitle: {
+//     fontFamily: "Pretendard-Bold",
+//     color: "white",
+//     fontSize: 16,
+//     maxWidth: width * 0.65,
+//   },
+//   tournamentItem: {
+//     paddingVertical: 10,
+//     paddingHorizontal: 15,
+//     backgroundColor: "#1A1A1A",
+//     borderRadius: 10,
+//     marginBottom: 15,
+//     borderTopColor: "rgb(241,249,88)",
+//     borderTopWidth: 2,
+//     alignItems: "center",
+//     flexDirection: "row",
+//     flexWrap: "wrap", // 텍스트와 버튼이 겹치지 않게 함
+//   },
+//   tournamentTitle2: {
+//     fontFamily: "Pretendard-Bold",
+//     color: "white",
+//     fontSize: 16,
+//     flexShrink: 1, // 텍스트가 공간을 초과할 경우 잘리도록 설정
+//   },
+//   tournamentDate: {
+//     fontFamily: "Pretendard-Regular",
+//     color: "#B4B4B4",
+//     fontSize: 14,
+//     flexShrink: 1, // 텍스트가 공간을 초과할 경우 잘리도록 설정
+//   },
+//   // tournamentDate: {
+//   //   fontFamily: "Pretendard-Regular",
+//   //   fontSize: 14,
+//   //   color: "lightgrey",
+//   // },
+//   noScheduleText: {
+//     fontSize: 16,
+//     color: "#777",
+//     textAlign: "center",
+//   },
+//   scrollContainer: {
+//     padding: 15,
+//     paddingTop: 0,
+//     paddingBottom: 50,
+//   },
+// });
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "black",
-    paddingTop: 50,
-
-    paddingHorizontal: 20,
+    paddingTop: responsiveHeight(50),
+    paddingHorizontal: responsiveWidth(20),
   },
   scheduleContainer: {
-    marginTop: 5,
-    paddingTop: 10,
+    marginTop: responsiveHeight(5),
+    paddingTop: responsiveHeight(5),
 
-    paddingHorizontal: 15,
-    marginBottom: 10,
-  },
-
-  tournamentTitle: {
-    fontFamily: "Pretendard-Bold",
-    color: "white",
-    fontSize: 16,
-    maxWidth: width * 0.7,
+    paddingHorizontal: responsiveWidth(5),
+    marginBottom: responsiveHeight(5),
   },
   tournamentItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: responsiveHeight(10),
+    paddingHorizontal: responsiveWidth(15),
     backgroundColor: "#1A1A1A",
-    borderRadius: 10,
-    marginBottom: 15,
+    borderRadius: responsiveWidth(10),
+    marginBottom: responsiveHeight(15),
     borderTopColor: "rgb(241,249,88)",
-    borderTopWidth: 2,
+    borderTopWidth: responsiveHeight(2),
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap", // 텍스트와 버튼이 겹치지 않게 함
   },
+  tournamentTitle: {
+    fontFamily: "Pretendard-Bold",
+    color: "white",
+    fontSize: responsiveFontSize(16),
+    maxWidth: responsiveWidth(250),
+  },
   tournamentTitle2: {
     fontFamily: "Pretendard-Bold",
     color: "white",
-    fontSize: 16,
-    flexShrink: 1, // 텍스트가 공간을 초과할 경우 잘리도록 설정
+    fontSize: responsiveFontSize(16),
+    flexShrink: 1,
   },
   tournamentDate: {
     fontFamily: "Pretendard-Regular",
     color: "#B4B4B4",
-    fontSize: 14,
-    flexShrink: 1, // 텍스트가 공간을 초과할 경우 잘리도록 설정
+    fontSize: responsiveFontSize(14),
+    flexShrink: 1,
   },
-  // tournamentDate: {
-  //   fontFamily: "Pretendard-Regular",
-  //   fontSize: 14,
-  //   color: "lightgrey",
-  // },
   noScheduleText: {
-    fontSize: 16,
+    fontSize: responsiveFontSize(16),
     color: "#777",
     textAlign: "center",
   },
-  scrollContainer: {
-    padding: 15,
-    paddingTop: 0,
-    paddingBottom: 50,
-  },
 });
-
 export default Tournaments;

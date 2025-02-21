@@ -14,6 +14,10 @@ import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 const { width, height } = Dimensions.get("window");
+import responsiveSize from "../utils/responsiveSize";
+
+const { responsiveWidth, responsiveHeight, responsiveFontSize } =
+  responsiveSize;
 const API_KEY =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNTRiYTY1MC1lM2VhLTAxM2EtMWVjNy02YmM5MzNkNDQ3NzciLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjU3NjE0NjY1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymctc3RhdC1ib3QifQ.2rKXN9meNKkC88vG54GcneCFNTBteBFVFAUPgi7ca_0";
 const Profile = () => {
@@ -118,7 +122,7 @@ const Profile = () => {
               color: "white",
 
               fontFamily: "BrigendsExpanded",
-              fontSize: 25,
+              fontSize: responsiveFontSize(25),
               color: "rgb(241,249,88)",
             }}
           >
@@ -128,7 +132,7 @@ const Profile = () => {
         <Carousel
           loop
           width={width}
-          height={230}
+          height={responsiveHeight(260)}
           autoPlay={true}
           autoPlayInterval={3000}
           data={images}
@@ -138,16 +142,16 @@ const Profile = () => {
               <Image
                 source={item.src}
                 style={{
-                  height: 200,
+                  height: responsiveHeight(220),
                   resizeMode: "contain",
-                  borderRadius: 10,
+                  borderRadius: responsiveWidth(10),
                 }}
               />
               <Text
                 style={{
                   color: "white",
                   fontFamily: "Pretendard-Bold",
-                  fontSize: 15,
+                  fontSize: responsiveFontSize(15),
                 }}
               >
                 {item.title}
@@ -196,7 +200,7 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    paddingBottom: 50,
+    paddingBottom: responsiveHeight(50),
     alignItems: "center",
   },
   container: {
@@ -206,8 +210,8 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   platformTitle: {
-    fontSize: 20,
-    marginBottom: 5,
+    fontSize: responsiveFontSize(20),
+    marginBottom: responsiveHeight(5),
     fontWeight: "bold",
     fontFamily: "Pretendard-Bold",
     color: "white",
@@ -216,14 +220,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginBottom: 10,
+    marginBottom: responsiveHeight(5),
   },
   platformBTN: {
-    margin: 5,
+    marginHorizontal: responsiveWidth(5),
+    marginVertical: responsiveHeight(5),
     backgroundColor: "rgba(241,249,88,1)",
-    width: 150,
-    padding: 10,
-    borderRadius: 5,
+    width: responsiveWidth(150),
+    borderWidth: responsiveWidth(2),
+    borderColor: "rgba(241,249,88,1)",
+    paddingHorizontal: responsiveWidth(10),
+    paddingVertical: responsiveHeight(10),
+    borderRadius: responsiveWidth(5),
     alignItems: "center",
   },
   platformTEXT: {
@@ -232,40 +240,44 @@ const styles = StyleSheet.create({
     fontFamily: "Pretendard-Regular",
   },
   ignTitle: {
-    fontSize: 20,
+    fontSize: responsiveFontSize(20),
     color: "white",
     fontFamily: "Pretendard-Bold",
-    marginBottom: 10,
+    marginBottom: responsiveHeight(10),
   },
   input: {
     textAlign: "center",
-    width: 300,
-    height: 40,
+    width: responsiveWidth(310),
+    height: responsiveHeight(45),
     borderColor: "rgb(241,249,88)",
-    borderRadius: 5,
-    borderWidth: 2,
-    paddingHorizontal: 10,
+    borderRadius: responsiveWidth(5),
+    borderWidth: responsiveWidth(2),
+    paddingHorizontal: responsiveWidth(10),
+    fontSize: responsiveFontSize(17),
     color: "white",
-    marginBottom: 10,
+    marginBottom: responsiveHeight(10),
     fontFamily: "Pretendard-Bold",
   },
   searchBTN: {
-    width: 300,
+    width: responsiveWidth(310),
     backgroundColor: "rgb(241,249,88)",
-    borderRadius: 5,
+    borderRadius: responsiveWidth(5),
     alignItems: "center",
-    padding: 10,
+    paddingHorizontal: responsiveWidth(10),
+    paddingVertical: responsiveHeight(10),
   },
   searchText: {
     textAlign: "center",
     color: "black",
     fontFamily: "Pretendard-Bold",
-    fontSize: 16,
+    fontSize: responsiveFontSize(16),
   },
   selectedPlatformBTN: {
     backgroundColor: "black", // 선택된 버튼 색상 (파란색)
-    borderWidth: 2,
+    borderWidth: responsiveWidth(2),
     borderColor: "rgb(241,249,88)",
+    paddingHorizontal: responsiveWidth(10),
+    paddingVertical: responsiveHeight(10),
   },
   platformTEXT: {
     color: "#000", // 기본 텍스트 색상

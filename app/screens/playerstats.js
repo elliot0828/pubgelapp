@@ -8,6 +8,10 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
+import responsiveSize from "../utils/responsiveSize";
+
+const { responsiveWidth, responsiveHeight, responsiveFontSize } =
+  responsiveSize;
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -60,13 +64,13 @@ const PlayerStats = ({ route }) => {
   const [selectedSeason, setSelectedSeason] = useState(
     seasonList[0]["id"][platform]
   );
-  const [selectedGameMode, setSelectedGameMode] = useState("normal"); // 기본 '일반전'
-  const [isNormalSelected, setIsNormalSelected] = useState(true); // 기본적으로 '일반전' 버튼 선택됨
+  const [selectedGameMode, setSelectedGameMode] = useState("normal");
+  const [isNormalSelected, setIsNormalSelected] = useState(true);
   const navigation = useNavigation();
   const [fontLoaded, setFontLoaded] = useState(false);
 
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(seasonList); // 드롭다운 아이템 상태
+  const [items, setItems] = useState(seasonList);
 
   useEffect(() => {
     setItems(seasonList);
@@ -76,13 +80,13 @@ const PlayerStats = ({ route }) => {
     navigation.setOptions({
       title: ign + "의 전적",
       headerStyle: {
-        backgroundColor: "black", // 헤더 배경 색
+        backgroundColor: "black",
       },
       headerTintColor: "rgb(241,249,88)",
     });
 
     const fetchPlayerStats = async () => {
-      setLoading(true); // 데이터 로딩 시작
+      setLoading(true);
       let playerOBJ = {
         ign: ign,
         platform: platform,
@@ -112,42 +116,44 @@ const PlayerStats = ({ route }) => {
           let updatedStat = await getData(playerOBJ);
           playerOBJ["stats"] = updatedStat;
 
-          setPlayerData(playerOBJ); // playerData 상태 업데이트
+          setPlayerData(playerOBJ);
         } else {
-          setPlayerData(null); // 데이터 없을 경우
+          setPlayerData(null);
         }
       } catch (error) {
         console.error("Error fetching player data:", error);
-        setPlayerData(null); // 에러 발생 시
+        setPlayerData(null);
       } finally {
-        setLoading(false); // 로딩 끝
+        setLoading(false);
       }
     };
 
     fetchPlayerStats();
-  }, [ign, platform, selectedSeason, selectedGameMode]); // 의존성 배열에 selectedGameMode 추가
+  }, [ign, platform, selectedSeason, selectedGameMode]);
 
   const handleNormalPress = () => {
-    setIsNormalSelected(true); // '일반전' 버튼을 활성화
-    setSelectedGameMode("normal"); // '일반전' 선택
-    setLoading(true); // 로딩 상태로 설정
+    setIsNormalSelected(true);
+    setSelectedGameMode("normal");
+    setLoading(true);
   };
   const handleRankedPress = () => {
-    setIsNormalSelected(false); // '경쟁전' 버튼을 활성화
-    setSelectedGameMode("ranked"); // '경쟁전' 선택
-    setLoading(true); // 로딩 상태로 설정
+    setIsNormalSelected(false);
+    setSelectedGameMode("ranked");
+    setLoading(true);
   };
   const handleHistoryPress = () => {
-    setSelectedGameMode("history"); // '최근 매치' 선택
-    setLoading(true); // 로딩 상태로 설정
+    setSelectedGameMode("history");
+    setLoading(true);
   };
   if (!fontsLoaded) {
     return null;
   }
   return (
-    <SafeAreaView style={styles.container}>
-      {/* 시즌 드롭다운 추가 */}
-
+    <SafeAreaView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+    >
       <DropDownPicker
         open={open}
         value={selectedSeason}
@@ -159,23 +165,22 @@ const PlayerStats = ({ route }) => {
         setValue={setSelectedSeason}
         setItems={setItems}
         placeholder="시즌 선택"
-        containerStyle={styles.dropdownContainer} // 외부 컨테이너 스타일
+        containerStyle={styles.dropdownContainer}
         dropDownContainerStyle={{
-          backgroundColor: "rgba(52,52,52,1)", // 드롭다운 리스트 배경색
-          borderWidth: 0, // 테두리 제거
-          elevation: 0, // 안드로이드 그림자 제거
-          shadowOpacity: 0, // iOS 그림자 제거
+          backgroundColor: "rgba(52,52,52,1)",
+          borderWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
         }}
         textStyle={{
-          fontSize: 15,
+          fontSize: responsiveFontSize(15),
           textAlign: "center",
-          // color: 'white', // 드롭다운 내부 텍스트 색상 변경
         }}
         style={{
           backgroundColor: "rgba(241,249,88,1)",
-          borderWidth: 0, // 테두리 제거
-          elevation: 0, // 안드로이드 그림자 제거
-          shadowOpacity: 0, // iOS 그림자 제거
+          borderWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
         }}
         disabledStyle={{
           opacity: 0.5,
@@ -183,13 +188,13 @@ const PlayerStats = ({ route }) => {
         labelStyle={{
           fontWeight: "bold",
 
-          fontSize: 18,
+          fontSize: responsiveFontSize(18),
         }}
         listItemLabelStyle={{
-          color: "white", // 드롭다운 항목의 글자 색상 변경
+          color: "white",
         }}
         placeholderStyle={{
-          color: "white", // 플레이스홀더 텍스트 색상 변경
+          color: "white",
         }}
       />
 
@@ -233,24 +238,6 @@ const PlayerStats = ({ route }) => {
             경쟁전
           </Text>
         </TouchableOpacity>
-
-        {/* <TouchableOpacity
-          style={[
-            styles.button,
-            selectedGameMode === 'history'
-              ? styles.selectedButton
-              : styles.deselectedButton,
-          ]}
-          onPress={handleHistoryPress}>
-          <Text
-            style={
-              selectedGameMode === 'history'
-                ? styles.selectedButtonText
-                : styles.deselectedButtonText
-            }>
-            최근 매치
-          </Text>
-        </TouchableOpacity> */}
       </View>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ScrollView>
@@ -258,20 +245,23 @@ const PlayerStats = ({ route }) => {
             <ActivityIndicator size="large" color="rgb(241,249,88)" />
           ) : playerData ? (
             selectedGameMode === "normal" ? (
-              // 일반전 전적
               <View style={styles.statsContainer}>
-                <View style={{ height: 120, marginBottom: 30 }}>
+                <View
+                  style={{
+                    height: responsiveHeight(120),
+                    marginBottom: responsiveHeight(30),
+                  }}
+                >
                   <View
                     style={{
-                      borderRadius: 5,
+                      borderRadius: responsiveWidth(5),
                       flexDirection: "row",
-                      // backgroundColor: "#171717",
                     }}
                   >
                     <View
                       style={{
                         flexDirection: "row",
-                        marginHorizontal: 15,
+                        marginHorizontal: responsiveWidth(15),
                       }}
                     >
                       <View style={stats.seasonCon}>
@@ -287,7 +277,7 @@ const PlayerStats = ({ route }) => {
                             flexDirection: "row",
                             height: "46%",
                             boxSizing: "border-box",
-                            marginBottom: 10,
+                            marginBottom: responsiveHeight(10),
                           }}
                         >
                           <View style={stats.avgStatCon}>
@@ -380,7 +370,7 @@ const PlayerStats = ({ route }) => {
                   <View style={combat.cCon}>
                     <View style={combat.h3}>
                       <Text style={long.sh3}>
-                        {playerData.stats.normal.damageDealt.toFixed(2)}
+                        {playerData.stats.normal.damageDealt.toFixed(0)}
                       </Text>
                       <Text style={combat.th3}>데미지</Text>
                     </View>
@@ -486,19 +476,27 @@ const PlayerStats = ({ route }) => {
                 </View>
               </View>
             ) : selectedGameMode === "ranked" ? (
-              // 경쟁전 전적
               <View style={styles.statsContainer}>
-                <View style={{ height: 120, marginBottom: 30 }}>
+                <View
+                  style={{
+                    height: responsiveHeight(120),
+                    paddingTop: responsiveHeight(20),
+                    marginBottom: responsiveHeight(40),
+                  }}
+                >
                   <View
                     style={{
-                      borderRadius: 5,
+                      borderRadius: responsiveWidth(5),
                       flexDirection: "row",
+                      height: 110,
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
                     <View
                       style={{
                         flexDirection: "row",
-                        marginHorizontal: 15,
+                        marginHorizontal: responsiveWidth(15),
                       }}
                     >
                       <View style={stats.seasonCon}>
@@ -528,7 +526,12 @@ const PlayerStats = ({ route }) => {
                             </Text>
                           </View>
                         </View>
-                        <View style={{ flexDirection: "row", marginTop: 5 }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            marginTop: responsiveHeight(5),
+                          }}
+                        >
                           <View style={stats.avgStatCon}>
                             <Text style={rstats.avgStatTitle}>승리</Text>
                             <Text style={stats.avgStatText}>
@@ -601,7 +604,7 @@ const PlayerStats = ({ route }) => {
                   <View style={combat.cCon}>
                     <View style={combat.h3}>
                       <Text style={long.sh3}>
-                        {playerData.stats.ranked.damageDealt.toFixed(2)}
+                        {playerData.stats.ranked.damageDealt.toFixed(0)}
                       </Text>
                       <Text style={combat.th3}>데미지</Text>
                     </View>
@@ -618,40 +621,9 @@ const PlayerStats = ({ route }) => {
                       <Text style={combat.th3}>어시스트</Text>
                     </View>
                   </View>
-                  {/* <View
-                  style={{
-                    backgroundColor: 'rgb(241,249,88)',
-                    borderRadius: 10,
-                    flexDirection: 'row',
-                  }}>
-                  <View style={rstats.h3}>
-                    <Text style={rstats.sh3}>
-                      {playerData.stats.ranked.revives}
-                    </Text>
-                    <Text style={rstats.th3}>회복</Text>
-                  </View>
-                  <View style={rstats.h3}>
-                    <Text style={rstats.sh3}>
-                      {playerData.stats.ranked.heals}
-                    </Text>
-                    <Text style={rstats.th3}>치유</Text>
-                  </View>
-                  <View style={rstats.h3}>
-                    <Text style={rstats.sh3}>
-                      {playerData.stats.ranked.boosts}
-                    </Text>
-                    <Text style={rstats.th3}>부스트</Text>
-                  </View>
-                </View> */}
                 </View>
               </View>
-            ) : selectedGameMode === "history" ? (
-              // 최근 매치 전적 (예시)
-              <View style={styles.statsContainer}>
-                <Text style={styles.statText}>최근매치나옵니다</Text>
-              </View>
             ) : (
-              // 기본 상태: 선택된 모드가 없을 때
               <View style={styles.statsContainer}>
                 <Text style={styles.statText}>선택된 모드가 없습니다.</Text>
               </View>
@@ -752,12 +724,12 @@ async function getData(obj) {
   }
 
   nTotal["longestKill"] = nTotal["longestKill"].toFixed(1) + "M";
-  nTotal["rideDistance"] = (nTotal["rideDistance"] / 1000).toFixed(1) + "KM";
-  nTotal["swimDistance"] = (nTotal["swimDistance"] / 1000).toFixed(1) + "KM";
-  nTotal["walkDistance"] = (nTotal["walkDistance"] / 1000).toFixed(1) + "KM";
+  nTotal["rideDistance"] = (nTotal["rideDistance"] / 1000).toFixed() + "KM";
+  nTotal["swimDistance"] = (nTotal["swimDistance"] / 1000).toFixed(0) + "KM";
+  nTotal["walkDistance"] = (nTotal["walkDistance"] / 1000).toFixed(0) + "KM";
   nTotal["longestTimeSurvived"] =
     (nTotal["longestTimeSurvived"] / 60).toFixed(1) + "분";
-  nTotal["timeSurvived"] = (nTotal["timeSurvived"] / 60).toFixed(1) + "분";
+  nTotal["timeSurvived"] = (nTotal["timeSurvived"] / 60).toFixed(0) + "분";
 
   nTotal["kda"] = (
     (nTotal["kills"] + nTotal["assists"]) /
@@ -831,31 +803,29 @@ async function getData(obj) {
 }
 const long = StyleSheet.create({
   sshD: {
-    // marginTop: 13,
     color: "rgb(241,249,88)",
-    fontSize: 32,
-    textAlign: "center",
     fontWeight: "bold",
+    fontSize: responsiveFontSize(33),
+    textAlign: "center",
     fontFamily: "WinnerSans-CompBold",
   },
   fshD: {
-    // marginTop: 8,
     color: "rgb(241,249,88)",
-    fontSize: 35,
+    fontSize: responsiveFontSize(35),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
   },
   shD: {
     color: "rgb(241,249,88)",
-    fontSize: 25,
+    fontSize: responsiveFontSize(25),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
   },
   lsh: {
     color: "black",
-    fontSize: 35,
+    fontSize: responsiveFontSize(35),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -863,7 +833,7 @@ const long = StyleSheet.create({
 
   lsh2: {
     color: "black",
-    fontSize: 28,
+    fontSize: responsiveFontSize(28),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -871,7 +841,7 @@ const long = StyleSheet.create({
 
   sh3: {
     color: "rgb(241,249,88)",
-    fontSize: 25,
+    fontSize: responsiveFontSize(20),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -879,54 +849,50 @@ const long = StyleSheet.create({
 });
 const run = StyleSheet.create({
   cCon: {
-    // backgroundColor: 'blue',
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: 10,
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'white',
+    paddingBottom: responsiveHeight(10),
   },
   con: {
-    marginTop: 10,
-    padding: 10,
-    flexDirection: "row", // 가로로 배치
-    justifyContent: "space-between", // 요소들 사이의 간격을 일정하게
-    alignItems: "center", // 세로 중앙 정렬
+    marginTop: responsiveHeight(10),
+    padding: responsiveWidth(10),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   lcon: {
     width: "50%",
     alignItems: "center",
-    borderRightWidth: 1,
+    borderRightWidth: responsiveWidth(1),
     borderRightColor: "black",
-    // paddingRight: 10, // 오른쪽 여백 추가 (옵션)
+
     backgroundColor: "rgb(241,249,88)",
-    borderRadius: 10,
+    borderRadius: responsiveWidth(10),
   },
   rcon: {
     width: "50%",
     alignItems: "center",
-    // paddingLeft: 10, // 왼쪽 여백 추가 (옵션)
   },
   h: {
     borderBottomColor: "black",
-    borderBottomWidth: 1,
+    borderBottomWidth: responsiveHeight(1),
     width: "90%",
-    paddingBottom: 10,
-    marginTop: 10,
+    paddingBottom: responsiveHeight(10),
+    marginTop: responsiveHeight(10),
     justifyContent: "center", // 세로 중앙 정렬
     alignItems: "center", // 가로 중앙 정렬
   },
 
   hc: {
     width: "90%",
-    paddingBottom: 10,
-    marginTop: 10,
+    paddingBottom: responsiveHeight(10),
+    marginTop: responsiveHeight(10),
     justifyContent: "center", // 세로 중앙 정렬
     alignItems: "center", // 가로 중앙 정렬
   },
   lsh: {
     color: "black",
-    fontSize: 35,
+    fontSize: responsiveFontSize(35),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -934,13 +900,13 @@ const run = StyleSheet.create({
   lth: {
     textAlign: "center",
     color: "black",
-    fontSize: 18,
-    marginTop: 3,
+    fontSize: responsiveFontSize(18),
+    marginTop: responsiveHeight(3),
     fontFamily: "Pretendard-Regular",
   },
   lsh2: {
     color: "black",
-    fontSize: 28,
+    fontSize: responsiveFontSize(28),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -948,18 +914,18 @@ const run = StyleSheet.create({
   lth2: {
     textAlign: "center",
 
-    fontSize: 16,
-    marginTop: 3,
+    fontSize: responsiveFontSize(16),
+    marginTop: responsiveHeight(3),
   },
   h3: {
     width: "30%",
-    // backgroundColor: 'red',
+
     justifyContent: "center",
     alignItems: "center",
   },
   sh3: {
     color: "rgb(241,249,88)",
-    fontSize: 18,
+    fontSize: responsiveFontSize(18),
     textAlign: "center",
     fontWeight: "bold",
   },
@@ -973,45 +939,40 @@ const run = StyleSheet.create({
 
 const combat = StyleSheet.create({
   cCon: {
-    // backgroundColor: 'blue',
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: 10,
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'white',
+    paddingBottom: responsiveHeight(10),
   },
   con: {
-    marginTop: 10,
-    padding: 10,
-    flexDirection: "row", // 가로로 배치
-    justifyContent: "space-between", // 요소들 사이의 간격을 일정하게
-    alignItems: "center", // 세로 중앙 정렬
+    marginTop: responsiveHeight(10),
+    padding: responsiveWidth(10),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   lcon: {
     width: "50%",
     alignItems: "center",
-    borderRightWidth: 1,
+    borderRightWidth: responsiveWidth(1),
     borderRightColor: "white",
-    // paddingRight: 10, // 오른쪽 여백 추가 (옵션)
   },
   rcon: {
     width: "50%",
     alignItems: "center",
-    // paddingLeft: 10, // 왼쪽 여백 추가 (옵션)
   },
   h: {
     borderBottomColor: "white",
-    borderBottomWidth: 1,
+    borderBottomWidth: responsiveFontSize(1),
     width: "90%",
-    paddingBottom: 10,
-    marginTop: 10,
+    paddingBottom: responsiveHeight(10),
+    marginTop: responsiveHeight(10),
     justifyContent: "center", // 세로 중앙 정렬
     alignItems: "center", // 가로 중앙 정렬
   },
 
   sh: {
     color: "rgb(241,249,88)",
-    fontSize: 35,
+    fontSize: responsiveFontSize(35),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -1020,12 +981,12 @@ const combat = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Pretendard-Regular",
     color: "white",
-    fontSize: 18,
-    marginTop: 3,
+    fontSize: responsiveFontSize(18),
+    marginTop: responsiveHeight(3),
   },
   sh2: {
     color: "rgb(241,249,88)",
-    fontSize: 28,
+    fontSize: responsiveFontSize(28),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -1034,18 +995,18 @@ const combat = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontFamily: "Pretendard-Regular",
-    fontSize: 16,
-    marginTop: 3,
+    fontSize: responsiveFontSize(16),
+    marginTop: responsiveHeight(3),
   },
   h3: {
     width: "30%",
-    // backgroundColor: 'red',
+
     justifyContent: "center",
     alignItems: "center",
   },
   sh3: {
     color: "rgb(241,249,88)",
-    fontSize: 18,
+    fontSize: responsiveFontSize(18),
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -1054,20 +1015,20 @@ const combat = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontFamily: "Pretendard-Regular",
-    fontSize: 16,
-    marginTop: 3,
+    fontSize: responsiveFontSize(16),
+    marginTop: responsiveHeight(3),
   },
 });
 
 const stats = StyleSheet.create({
   combatCon: {
-    marginTop: 10,
+    marginTop: responsiveHeight(10),
   },
   typeTitle: {
     color: "white",
-    fontSize: 25,
+    fontSize: responsiveFontSize(25),
     textAlign: "center",
-    marginTop: 10,
+    marginTop: responsiveHeight(10),
     fontFamily: "Pretendard-ExtraBold",
     fontWeight: "bold",
   },
@@ -1075,7 +1036,8 @@ const stats = StyleSheet.create({
     height: "30%",
     justifyContent: "center",
     color: "white",
-    padding: 3,
+    fontSize: responsiveFontSize(12),
+    padding: responsiveWidth(3),
     boxSizing: "border-box",
     fontFamily: "Pretendard-Regular",
   },
@@ -1083,19 +1045,19 @@ const stats = StyleSheet.create({
   avgStatText: {
     color: "white",
     fontFamily: "Pretendard-Regular",
-    fontSize: 20,
+    fontSize: responsiveFontSize(20),
     height: "70%",
     flex: 1,
     boxSizing: "border-box",
-    padding: 5,
-    paddingTop: 10,
+    padding: responsiveWidth(5),
+    paddingTop: responsiveHeight(10),
     fontFamily: "AgencyFB-Bold",
     paddingBottom: 0,
   },
   avgStatCon: {
     width: "33.3333%",
-    borderLeftWidth: 1,
-    paddingLeft: 3,
+    borderLeftWidth: responsiveWidth(1),
+    paddingLeft: responsiveWidth(3),
     borderColor: "white",
   },
 
@@ -1103,32 +1065,34 @@ const stats = StyleSheet.create({
     width: "65%",
     boxSizing: "border-box",
     backgroundColor: "#171717",
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    padding: 10,
+    height: responsiveHeight(155),
+    borderTopRightRadius: responsiveWidth(10),
+    borderBottomRightRadius: responsiveWidth(10),
+    padding: responsiveWidth(10),
   },
   seasonCon: {
     backgroundColor: "#171717",
     width: "35%",
     boxSizing: "border-box",
     alignContent: "center",
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    padding: 10,
-    paddingLeft: 18,
+    borderTopLeftRadius: responsiveWidth(10),
+    borderBottomLeftRadius: responsiveWidth(10),
+    padding: responsiveWidth(10),
+    paddingLeft: responsiveWidth(18),
   },
   seasonNum: {
     color: "white",
-    fontSize: 90,
+    fontSize: responsiveFontSize(80),
+
     textAlign: "center",
     fontFamily: "PUBGBattlegrounds-Textured",
   },
   seasonTitle: {
     color: "white",
-    fontSize: 30,
+    fontSize: responsiveFontSize(25),
     textAlign: "center",
     fontFamily: "PUBGBattlegrounds-Textured",
-    height: 30,
+    height: responsiveHeight(30),
     padding: 0,
   },
 });
@@ -1136,7 +1100,7 @@ const stats = StyleSheet.create({
 const rstats = StyleSheet.create({
   sh3: {
     color: "rgb(241,249,88)",
-    fontSize: 15,
+    fontSize: responsiveFontSize(15),
     textAlign: "center",
     color: "black",
     fontWeight: "bold",
@@ -1144,36 +1108,40 @@ const rstats = StyleSheet.create({
   },
   h3: {
     width: "33%",
-    // backgroundColor: 'red',
     justifyContent: "center",
     alignItems: "center",
   },
-  th3: { textAlign: "center", color: "black", fontSize: 16, marginTop: 3 },
+  th3: {
+    textAlign: "center",
+    color: "black",
+    fontSize: responsiveFontSize(15),
+    marginTop: responsiveHeight(3),
+  },
   rp: { width: "60%" },
   rpText: {
-    paddingTop: 2,
+    paddingTop: responsiveHeight(2),
     color: "white",
     fontFamily: "AgencyFB-Bold",
-    fontSize: 30,
+    fontSize: responsiveFontSize(30),
   },
   rpPoint: {
     color: "white",
     fontFamily: "AgencyFB-Bold",
-    fontSize: 23,
+    fontSize: responsiveFontSize(20),
   },
   tierIMG: {
     resizeMode: "contain",
     width: "40%",
-    height: 70,
+    height: responsiveHeight(70),
   },
   combatCon: {
-    marginTop: 10,
+    marginTop: responsiveHeight(10),
   },
   typeTitle: {
     color: "white",
-    fontSize: 25,
+    fontSize: responsiveFontSize(25),
     textAlign: "center",
-    marginTop: 10,
+    marginTop: responsiveHeight(10),
     fontFamily: "Pretendard-ExtraBold",
     fontWeight: "bold",
   },
@@ -1181,8 +1149,9 @@ const rstats = StyleSheet.create({
     height: "30%",
     justifyContent: "center",
     color: "white",
+    fontSize: responsiveFontSize(12),
     padding: 0,
-    fontSize: 14,
+
     boxSizing: "border-box",
     fontFamily: "Pretendard-Regular",
   },
@@ -1190,19 +1159,20 @@ const rstats = StyleSheet.create({
   avgStatText: {
     color: "white",
     fontFamily: "Pretendard-Regular",
-    fontSize: 20,
+    fontSize: responsiveFontSize(20),
     height: "70%",
     flex: 1,
     boxSizing: "border-box",
-    padding: 5,
-    paddingTop: 10,
+    padding: responsiveWidth(5),
+    paddingTop: responsiveHeight(10),
     fontFamily: "AgencyFB-Bold",
     paddingBottom: 0,
   },
   avgStatCon: {
     width: "33.3333%",
-    borderLeftWidth: 1,
-    paddingLeft: 3,
+    borderLeftWidth: responsiveWidth(1),
+    paddingLeft: responsiveWidth(3),
+
     borderColor: "white",
   },
 
@@ -1210,32 +1180,33 @@ const rstats = StyleSheet.create({
     width: "65%",
     boxSizing: "border-box",
     backgroundColor: "#171717",
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    padding: 10,
+
+    borderTopRightRadius: responsiveWidth(10),
+    borderBottomRightRadius: responsiveWidth(10),
+    padding: responsiveWidth(10),
   },
   seasonCon: {
     backgroundColor: "#171717",
     width: "35%",
     boxSizing: "border-box",
     alignContent: "center",
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    padding: 10,
-    paddingLeft: 18,
+    borderTopLeftRadius: responsiveWidth(10),
+    borderBottomLeftRadius: responsiveWidth(10),
+    padding: responsiveWidth(10),
+    paddingLeft: responsiveWidth(18),
   },
   seasonNum: {
     color: "white",
-    fontSize: 90,
+    fontSize: responsiveFontSize(90),
     textAlign: "center",
     fontFamily: "PUBGBattlegrounds-Textured",
   },
   seasonTitle: {
     color: "white",
-    fontSize: 30,
+    fontSize: responsiveFontSize(30),
     textAlign: "center",
     fontFamily: "PUBGBattlegrounds-Textured",
-    height: 30,
+    height: responsiveHeight(30),
     padding: 0,
   },
 });
@@ -1244,30 +1215,31 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     width: "80%",
     marginLeft: "10%",
-    marginBottom: 10,
-    borderRadius: 10,
+    marginBottom: responsiveHeight(10),
+    borderRadius: responsiveWidth(10),
   },
 
   container: {
+    flexWrap: "wrap",
     flex: 1,
-    padding: 15,
+    padding: responsiveWidth(10),
     backgroundColor: "black",
     width: "100%",
   },
   buttonContainer: {
     flexDirection: "row",
-    paddingHorizontal: 15,
-    marginBottom: 15,
+    paddingHorizontal: responsiveWidth(10),
+    marginBottom: responsiveHeight(10),
     justifyContent: "space-between",
   },
   button: {
-    padding: 10,
-    margin: 4,
+    padding: responsiveWidth(10),
+    margin: responsiveWidth(4),
     marginTop: 0,
     marginBottom: 0,
     width: "48%",
     backgroundColor: "black",
-    borderRadius: 5,
+    borderRadius: responsiveWidth(5),
   },
   selectedButton: {
     backgroundColor: "rgb(241,249,88)",
@@ -1279,13 +1251,13 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: responsiveFontSize(18),
   },
   deselectedButtonText: {
     color: "rgb(241,249,88)",
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: responsiveFontSize(18),
   },
   statText: {
     color: "white",
@@ -1293,7 +1265,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red",
-    fontSize: 16,
+    fontSize: responsiveFontSize(16),
   },
 });
 

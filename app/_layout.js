@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 import * as SplashScreen from "expo-splash-screen";
 const Stack = createStackNavigator();
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -110,7 +111,6 @@ const App = () => {
       prepareApp();
     }
   }, [fontsLoaded]);
-
   if (!appReady) {
     return null; // 스플래시 화면 유지
   }
