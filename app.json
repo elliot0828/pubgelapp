@@ -4,11 +4,10 @@
     "slug": "pel",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon/ios/AppIcon~ios-marketing.png",
+    "icon": "./assets/icon/appstore.png",
     "splash": {
-      "image": "./assets/icon/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#171717",
+      "icon": "./assets/icon/appstore.png"
     },
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -18,9 +17,11 @@
       "bundleIdentifier": "com.iambykim.pel",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": ["fetch", "remote-notification"]
       }
     },
+
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -34,6 +35,15 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#171717",
+          "image": "./assets/icon/appstore.png",
+
+          "imageWidth": 200
+        }
+      ],
       "@react-native-firebase/app",
       [
         "expo-build-properties",
@@ -44,15 +54,6 @@
         }
       ],
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
       [
         "expo-font",
         {

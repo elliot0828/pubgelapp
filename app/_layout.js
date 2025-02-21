@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  Text,
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  BackHandler,
-} from "react-native";
+import { StyleSheet, View, Text, Button } from "react-native";
+import { useFonts } from "expo-font";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import * as SplashScreen from "expo-splash-screen";
+
+//푸시 알림
+// 화면 컴포넌트들 (예시로 Esports와 Profile)
 import Profile from "./screens/profile";
 import Gpt from "./screens/gpt";
 import Tool from "./screens/tool";
@@ -18,24 +19,25 @@ import Tournaments from "./screens/tournaments";
 import tournamentDetail from "./screens/tournamentDetail";
 import Chat from "./screens/chat";
 import Home from "./screens/home";
-import * as Network from "expo-network";
-import { useFonts } from "expo-font";
-const Tab = createBottomTabNavigator();
-import * as SplashScreen from "expo-splash-screen";
-const Stack = createStackNavigator();
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
+// 스플래시 화면을 계속 보여주기 위한 설정
+SplashScreen.preventAutoHideAsync(); // 앱 실행 시 자동으로 스플래시 화면 숨김을 막음
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+//ui
 const TabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="홈"
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "black", // 탭 배경색 설정
+          backgroundColor: "black",
           borderTopWidth: 0,
         },
-        tabBarActiveTintColor: "rgb(241,249,88)", // 활성화된 탭 색상 (빨간색)
-        tabBarInactiveTintColor: "#808080", // 비활성화된 탭 색상 (회색)
+        tabBarActiveTintColor: "rgb(241,249,88)", // 활성화된 탭 색상
+        tabBarInactiveTintColor: "#808080", // 비활성화된 탭 색상
       }}
     >
       <Tab.Screen
@@ -43,7 +45,7 @@ const TabNavigator = () => {
         component={Esports}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused, color, size }) => (
+          tabBarIcon: ({ color }) => (
             <FontAwesome6 name="house" size={20} color={color} />
           ),
         }}
@@ -63,20 +65,11 @@ const TabNavigator = () => {
         component={Profile}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused, color, size }) => (
+          tabBarIcon: ({ color }) => (
             <FontAwesome6 name="chart-simple" size={20} color={color} />
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="PUBG"
-        component={Home}
-        options={{
-          headerShown: false,
-          tabBarActiveTintColor: "#ffa200",
-        }}
-      /> */}
-
       <Tab.Screen
         name="도구"
         component={Tool}
@@ -101,19 +94,19 @@ const App = () => {
     "Pretendard-Bold": require("../assets/fonts/Pretendard-Bold.otf"),
     BrigendsExpanded: require("../assets/fonts/BrigendsExpanded.otf"),
   });
-  useEffect(() => {
-    async function prepareApp() {
-      setAppReady(true);
-      await SplashScreen.hideAsync(); // 스플래시 숨기기
-    }
 
+  useEffect(() => {
     if (fontsLoaded) {
-      prepareApp();
+      setAppReady(true); // 폰트가 로드되면 앱 준비 상태를 true로 설정
+      //  console.log("폰트 로딩됨:", fontsLoaded, expoPushToken);
+      SplashScreen.hideAsync(); // 폰트가 로드되면 스플래시 화면 숨기기
     }
   }, [fontsLoaded]);
+
   if (!appReady) {
-    return null; // 스플래시 화면 유지
+    return null; // 폰트가 로드될 때까지 스플래시 화면을 유지
   }
+
   return (
     <Stack.Navigator>
       <Stack.Screen

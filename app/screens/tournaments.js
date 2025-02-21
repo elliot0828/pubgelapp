@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,13 @@ import {
   Linking,
   SafeAreaView,
   TouchableOpacity,
+  Switch,
 } from "react-native";
 import responsiveSize from "../utils/responsiveSize";
-
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
+import axios from "axios";
 const { responsiveWidth, responsiveHeight, responsiveFontSize } =
   responsiveSize;
 import { useNavigation } from "@react-navigation/native";
@@ -23,6 +27,59 @@ import moment from "moment";
 import { useFonts } from "expo-font";
 import { ScrollView } from "react-native-gesture-handler";
 const { width, height } = Dimensions.get("window");
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+function handleRegistrationError(errorMessage) {
+  alert(errorMessage);
+  throw new Error(errorMessage);
+}
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      handleRegistrationError(
+        "Permission not granted to get push token for push notification!"
+      );
+      return;
+    }
+    const projectId =
+      Constants?.expoConfig?.extra?.eas?.projectId ??
+      Constants?.easConfig?.projectId;
+    if (!projectId) {
+      handleRegistrationError("Project ID not found");
+    }
+    try {
+      const pushTokenString = (
+        await Notifications.getExpoPushTokenAsync({
+          projectId,
+        })
+      ).data;
+
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log("📌 푸시 토큰:", token);
+      return pushTokenString;
+    } catch (e) {
+      handleRegistrationError(`${e}`);
+    }
+  } else {
+    handleRegistrationError("Must use physical device for push notifications");
+  }
+}
+
 const Tournaments = () => {
   const navigation = useNavigation(); // 네비게이션 훅 사용
   const [fontsLoaded] = useFonts({
@@ -35,12 +92,90 @@ const Tournaments = () => {
   });
 
   const [markedDates, setMarkedDates] = useState({});
+  const [isEnabled, setIsEnabled] = useState(false);
   const [tournamentsData, setTournaments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
   const [selectedTournaments, setSelectedTournaments] = useState([]);
+  const [notification, setNotification] = useState(undefined);
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const sendToken = async () => {
+    if (expoPushToken) {
+      try {
+        const response = axios.post("http://192.168.0.8:3000/save-token", {
+          expoPushToken,
+        });
+        await console.log("서버에 토큰 저장 성공:", response, expoPushToken);
+      } catch (error) {
+        console.error("서버에 토큰 저장 실패:", error);
+      }
+    } else {
+      console.warn("🚨 푸시 토큰이 없습니다.");
+    }
+  };
+  const changeToken = async () => {
+    if (expoPushToken) {
+      try {
+        const response = axios.post("http://192.168.0.8:3000/change-token", {
+          expoPushToken,
+        });
+        await console.log("서버에 토큰 저장 성공:", response, expoPushToken);
+      } catch (error) {
+        console.error("서버에 토큰 저장 실패:", error);
+      }
+    } else {
+      console.warn("🚨 푸시 토큰이 없습니다.");
+    }
+  };
+  const sendmsg = async () => {
+    if (expoPushToken) {
+      try {
+        const response = axios.post(
+          "http://192.168.0.8:3000/send-push-notification",
+          {
+            expoPushToken,
+            title: "테스ㅡ트",
+            body: "문서",
+          }
+        );
+        await console.log("서버에 토큰 저장 성공:", response, expoPushToken);
+      } catch (error) {
+        console.error("서버에 토큰 저장 실패:", error);
+      }
+    } else {
+      console.warn("🚨 푸시 토큰이 없습니다.");
+    }
+  };
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        console.log("📌 useEffect 내부 token:", token); // 여기 로그 잘 찍히는지 확인!
+        setExpoPushToken(token ?? "");
+      })
+      .catch((error) => setExpoPushToken(`${error}`));
 
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      notificationListener.current &&
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+      responseListener.current &&
+        Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
   // 🔥 일정 데이터를 불러오면서 markedDates 생성
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -92,7 +227,30 @@ const Tournaments = () => {
 
     fetchTournaments();
   }, []);
+  useEffect(() => {
+    const fetchAlert = async () => {
+      try {
+        const alertQuery = await getDocs(collection(db, "alert"));
+        if (alertQuery.empty) {
+          console.log("알림 받을 토큰이 없습니다");
+        } else {
+          alertQuery.forEach((doc) => {
+            if (doc.id == expoPushToken) {
+              if (doc.data().status == true) {
+                setIsEnabled(true);
+              } else {
+                setIsEnabled(false);
+              }
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching tournaments:", error);
+      }
+    };
 
+    fetchAlert();
+  }, [expoPushToken]);
   // 🔄 날짜 선택 시 markedDates 업데이트
   const handleDayPress = (day) => {
     const newSelectedDate = day.dateString;
@@ -239,6 +397,30 @@ const Tournaments = () => {
     </TouchableOpacity>
   );
 
+  const handleSwitchOn = () => {
+    setTimeout(() => {
+      sendToken();
+    }, 500);
+
+    // 여기에 켰을 때 실행할 로직을 추가
+  };
+
+  // 껐을 때 실행할 함수
+  const handleSwitchOff = () => {
+    setTimeout(() => {
+      changeToken();
+    }, 500);
+    // 여기에 껐을 때 실행할 로직을 추가
+  };
+  const toggleSwitch = (value) => {
+    setIsEnabled(value);
+    if (value) {
+      handleSwitchOn(); // 켰을 때 함수 실행
+    } else {
+      handleSwitchOff(); // 껐을 때 함수 실행
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -268,6 +450,33 @@ const Tournaments = () => {
             arrowColor: "rgb(241,249,88)",
           }}
         />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "Pretendard-Regular",
+              fontSize: responsiveFontSize(15),
+              alignItems: "center",
+              alignContent: "center",
+              marginRight: responsiveWidth(5),
+            }}
+          >
+            토너먼트 알림 받기
+          </Text>
+          <Switch
+            trackColor={{ false: "#171717", true: "#171717" }}
+            thumbColor={isEnabled ? "rgb(241,249,88)" : "#f4f3f4"}
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
 
         <View style={styles.scheduleContainer}>
           {selectedTournaments.length > 0 ? (
