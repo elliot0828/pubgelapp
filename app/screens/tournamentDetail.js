@@ -9,6 +9,12 @@ import {
   Dimensions,
 } from "react-native";
 const { width, height } = Dimensions.get("window");
+import responsiveSize, {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "../utils/responsiveSize";
+
 import initFirebase from "../firebase";
 const { app, auth, db } = initFirebase();
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
@@ -79,27 +85,42 @@ const TournamentDetail = ({ route }) => {
         {tournamentData !== null &&
           tournamentData.startAt !== null &&
           tournamentData.endAt !== null && (
-            <View style={{ alignItems: "center", marginTop: 10 }}>
-              <Image
-                source={{ uri: tournamentData.logoUrl }}
-                style={styles.image}
-              />
-              <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-                {tournamentData.shortTitle}
-              </Text>
+            <View
+              style={{ alignItems: "center", marginTop: responsiveHeight(5) }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "rgb(241,249,88)",
+                  paddingTop: responsiveHeight(10),
+                }}
+              >
+                <Image
+                  source={{ uri: tournamentData.darkLogoUrl }}
+                  style={styles.image}
+                />
+                <Text
+                  style={styles.title}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {tournamentData.shortTitle}
+                </Text>
+              </View>
+
               <Text
                 style={{
-                  marginTop: 10,
+                  marginTop: responsiveHeight(10),
                   color: "rgb(241,249,88)",
-                  fontSize: 18,
+                  fontSize: responsiveFontSize(20),
                   fontFamily: "Pretendard-Bold",
-                  width: width * 0.8,
+                  width: width * 0.9,
                 }}
               >
                 일정
               </Text>
               <Text
-                style={styles.description}
+                style={styles.descriptionLLL}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -108,11 +129,11 @@ const TournamentDetail = ({ route }) => {
               </Text>
               <Text
                 style={{
-                  marginTop: 10,
+                  marginTop: responsiveHeight(10),
                   color: "rgb(241,249,88)",
-                  fontSize: 18,
+                  fontSize: responsiveFontSize(20),
                   fontFamily: "Pretendard-Bold",
-                  width: width * 0.8,
+                  width: width * 0.9,
                 }}
               >
                 상금
@@ -126,11 +147,11 @@ const TournamentDetail = ({ route }) => {
               </Text>
               <Text
                 style={{
-                  marginTop: 10,
+                  marginTop: responsiveHeight(10),
                   color: "rgb(241,249,88)",
-                  fontSize: 18,
+                  fontSize: responsiveFontSize(20),
                   fontFamily: "Pretendard-Bold",
-                  width: width * 0.8,
+                  width: width * 0.9,
                 }}
               >
                 참가지역
@@ -142,11 +163,11 @@ const TournamentDetail = ({ route }) => {
               </Text>
               <Text
                 style={{
-                  marginTop: 10,
+                  marginTop: responsiveHeight(10),
                   color: "rgb(241,249,88)",
-                  fontSize: 18,
+                  fontSize: responsiveFontSize(20),
                   fontFamily: "Pretendard-Bold",
-                  width: width * 0.8,
+                  width: width * 0.9,
                 }}
                 numberOfLines={1}
                 ellipsizeMode="tail"
@@ -160,33 +181,34 @@ const TournamentDetail = ({ route }) => {
           )}
         {tournamentData !== null && tournamentData.winnerTeamId !== null && (
           <View style={{ alignItems: "center", marginTop: 10 }}>
-            <Text style={styles.title} numberOfLines={1}>
+            <Text style={styles.titleW} numberOfLines={1}>
               WINNER
             </Text>
             <Image
               style={{
-                width: width * 0.8,
+                width: width * 0.9,
                 height: undefined,
                 aspectRatio: 16 / 9,
-                marginTop: 10,
+                marginTop: responsiveHeight(10),
               }}
               source={{ uri: tournamentData.winnerTeamMobileImageUrl }}
             />
             <View
               style={{
-                flex: 1,
                 flexDirection: "row",
                 alignItems: "center", // 세로 중앙 정렬
                 justifyContent: "center", // 가로 중앙 정렬
-                marginBottom: 15,
+                marginBottom: responsiveHeight(15),
+                width: width * 0.9,
+                backgroundColor: "rgba(241,249,88,1)",
               }}
             >
               <Image
                 style={{
                   width: width * 0.15,
                   height: undefined,
-                  aspectRatio: 16 / 9,
-                  marginTop: 10,
+                  aspectRatio: 1 / 1,
+                  marginTop: responsiveHeight(0),
                 }}
                 source={{ uri: tournamentData.winnerTeamLogoUrl }}
               />
@@ -206,43 +228,65 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 15,
+    padding: responsiveWidth(10),
     backgroundColor: "black",
   },
-  image: { width: width * 0.25, height: undefined, aspectRatio: 1 / 1 }, // 이미지 크기
+  image: { width: responsiveWidth(85), height: undefined, aspectRatio: 1 / 1 }, // 이미지 크기
   title: {
-    marginTop: 5,
-    fontSize: 25,
+    marginTop: responsiveWidth(5),
+    fontSize: responsiveFontSize(25),
     fontWeight: "bold",
     textAlign: "center",
     fontFamily: "WinnerSans-CompBold",
     borderBottomColor: "rgb(241,249,88)",
-    borderBottomWidth: 2,
-    width: width * 0.8,
-    paddingBottom: 15,
-    color: "white",
+    borderBottomWidth: responsiveWidth(2),
+    width: width * 0.9,
+    paddingBottom: responsiveWidth(10),
+    // color: "white",
   },
   description: {
-    marginTop: 5,
+    marginTop: responsiveHeight(5),
     color: "white",
     fontFamily: "WinnerSans-CompBold",
-    width: width * 0.8,
-    fontSize: 14,
+    width: width * 0.9,
+    fontSize: responsiveFontSize(20),
   },
   descriptionL: {
-    marginTop: 5,
+    marginTop: responsiveHeight(5),
     fontFamily: "WinnerSans-CompBold",
     color: "white",
-    width: width * 0.8,
-    fontSize: 14,
+    width: width * 0.9,
+    fontSize: responsiveFontSize(20),
     borderBottomColor: "rgb(241,249,88)",
-    borderBottomWidth: 2,
-    paddingBottom: 15,
+    borderBottomWidth: responsiveHeight(2),
+    paddingBottom: responsiveHeight(15),
   },
   descriptionLL: {
     fontFamily: "WinnerSans-CompBold",
+    alignContent: "center",
+    justifyContent: "center",
+    color: "black",
+    textAlign: "center",
+    fontSize: responsiveFontSize(16),
+  },
+  descriptionLLL: {
+    width: width * 0.9,
+    fontFamily: "WinnerSans-CompBold",
     color: "white",
-    fontSize: 14,
+    fontSize: responsiveFontSize(18),
+    marginTop: responsiveHeight(5),
+  },
+  titleW: {
+    marginTop: responsiveWidth(5),
+    fontSize: responsiveFontSize(25),
+    fontWeight: "bold",
+    textAlign: "center",
+    fontFamily: "WinnerSans-CompBold",
+    borderBottomColor: "rgb(241,249,88)",
+    borderBottomWidth: responsiveWidth(2),
+    width: width * 0.9,
+    paddingBottom: responsiveWidth(15),
+    color: "white",
   },
 });
 

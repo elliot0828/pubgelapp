@@ -18,6 +18,11 @@ import { ScrollView } from "react-native-gesture-handler";
 // import { SafeAreaView } from "react-native-safe-area-context";
 const { width, height } = Dimensions.get("window");
 import initFirebase from "../firebase"; // 경로는 파일 구조에 맞게 수정
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "../utils/responsiveSize";
 const { app, auth, db } = initFirebase();
 
 const Esports = ({ navigation }) => {
@@ -29,24 +34,13 @@ const Esports = ({ navigation }) => {
     "Pretendard-Bold": require("../../assets/fonts/Pretendard-Bold.otf"),
     BrigendsExpanded: require("../../assets/fonts/BrigendsExpanded.otf"),
   });
-  const GPTitems = [
-    { title: "4am", img: require("../../assets/images/GPT/4AM.png") },
-    { title: "17", img: require("../../assets/images/GPT/17.png") },
-    { title: "ces", img: require("../../assets/images/GPT/CES.png") },
-    { title: "day", img: require("../../assets/images/GPT/DAY.png") },
-    { title: "faze", img: require("../../assets/images/GPT/FaZe.png") },
-    { title: "gen", img: require("../../assets/images/GPT/GEN.png") },
-    { title: "navi", img: require("../../assets/images/GPT/NAVI.png") },
-    { title: "pero", img: require("../../assets/images/GPT/PeRo.png") },
-    { title: "sq", img: require("../../assets/images/GPT/SQ.png") },
-    { title: "twis", img: require("../../assets/images/GPT/TWIS.png") },
-  ];
+
   const carouselRef = useRef(null);
 
   const [esportsdata, setesportsData] = useState([]);
 
   const [rankingdata, setrankingData] = useState([]);
-
+  const [gptdata, setgptData] = useState([]);
   const [ytdata, setytData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +71,19 @@ const Esports = ({ navigation }) => {
             prankingData.push({ id: doc.id, ...doc.data() });
           });
           setrankingData(prankingData);
+          //  console.log("이스포츠 데이터:", prankingData); // 여기서 데이터를 확인해보세요
+        }
+
+        const gptQuery = await getDocs(collection(db, "gpt"));
+
+        if (gptQuery.empty) {
+          console.log("파워랭킹 데이터가 없습니다.");
+        } else {
+          const gptData = [];
+          gptQuery.forEach((doc) => {
+            gptData.push({ id: doc.id, ...doc.data() });
+          });
+          setgptData(gptData);
           //  console.log("이스포츠 데이터:", prankingData); // 여기서 데이터를 확인해보세요
         }
 
@@ -135,10 +142,10 @@ const Esports = ({ navigation }) => {
           </Text>
         </View>
         <Carousel
-          style={{ marginTop: 10 }}
+          style={{ marginTop: responsiveHeight(10) }}
           loop
           width={width * 0.9}
-          height={228}
+          height={width * 0.6}
           autoPlay={true}
           autoPlayInterval={3000} // 3초마다 자동 이동
           data={esportsdata}
@@ -164,7 +171,7 @@ const Esports = ({ navigation }) => {
               color: "white",
               textAlign: "center",
               fontFamily: "BrigendsExpanded",
-              fontSize: 18,
+              fontSize: responsiveFontSize(18),
               color: "rgb(241,249,88)",
             }}
           >
@@ -174,8 +181,9 @@ const Esports = ({ navigation }) => {
         <View style={styles.tableContainer}>
           {[0, 1].map((rowIndex) => (
             <View key={rowIndex} style={styles.tableRow}>
-              {GPTitems.slice(rowIndex * 5, rowIndex * 5 + 5).map(
-                (item, index) => (
+              {gptdata
+                .slice(rowIndex * 5, rowIndex * 5 + 5)
+                .map((item, index) => (
                   <TouchableOpacity
                     key={index}
                     style={styles.tableCell}
@@ -186,18 +194,20 @@ const Esports = ({ navigation }) => {
                       })
                     }
                   >
-                    <Image source={item.img} style={styles.cellImage} />
+                    <Image
+                      source={{ uri: item.logoUrl }}
+                      style={styles.cellImage}
+                    />
                   </TouchableOpacity>
-                )
-              )}
+                ))}
             </View>
           ))}
         </View>
         <View
           style={{
-            marginTop: 15,
+            marginTop: responsiveHeight(15),
             borderTopColor: "rgb(241,249,88)",
-            borderWidth: 3,
+            borderWidth: responsiveWidth(3),
           }}
         >
           <Text
@@ -205,8 +215,8 @@ const Esports = ({ navigation }) => {
               color: "white",
               textAlign: "center",
               fontFamily: "Pretendard-Bold",
-              fontSize: 20,
-              padding: 10,
+              fontSize: responsiveFontSize(20),
+              padding: responsiveWidth(10),
               color: "rgb(241,249,88)",
               width: width * 0.9,
             }}
@@ -217,11 +227,13 @@ const Esports = ({ navigation }) => {
         <View
           style={{
             backgroundColor: "rgb(243,243,243)",
-            padding: 15,
-            marginHorizontal: 15,
+            padding: responsiveWidth(15),
+            marginHorizontal: responsiveWidth(15),
           }}
         >
-          <View style={{ flexDirection: "row", marginBottom: 15 }}>
+          <View
+            style={{ flexDirection: "row", marginBottom: responsiveHeight(15) }}
+          >
             <Text style={styles.rankTypeR}>RANK</Text>
             <Text style={styles.rankTypeT}>TEAM</Text>
             <Text style={styles.rankTypeP}>POWER PT</Text>
@@ -260,7 +272,7 @@ const Esports = ({ navigation }) => {
               color: "white",
               textAlign: "center",
               fontFamily: "Pretendard-Bold",
-              marginTop: 15,
+              marginTop: responsiveHeight(15),
               fontSize: 25,
               color: "rgb(241,249,88)",
             }}
@@ -272,7 +284,7 @@ const Esports = ({ navigation }) => {
           style={{ marginTop: 10, marginBottom: 0 }}
           loop
           width={width * 0.9}
-          height={200}
+          height={width * 0.54}
           autoPlay={true}
           autoPlayInterval={2000} // 3초마다 자동 이동
           data={ytdata}
@@ -365,7 +377,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#000",
-    paddingVertical: 15,
+    // paddingVertical: responsiveHeight(15),
 
     // width: width,
   },
@@ -373,10 +385,10 @@ const styles = StyleSheet.create({
     // padding: 15,
     alignItems: "center",
     paddingTop: 0,
-    paddingBottom: 50,
+    paddingBottom: responsiveHeight(50),
   },
   slide: {
-    borderRadius: 10,
+    borderRadius: responsiveWidth(10),
     overflow: "hidden",
     alignItems: "center",
   },
@@ -384,20 +396,20 @@ const styles = StyleSheet.create({
     width: width * 0.9,
     height: undefined,
     aspectRatio: 16 / 9,
-    borderRadius: 10,
+    borderRadius: responsiveWidth(10),
   },
   newsTitle: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 8,
+    marginTop: responsiveHeight(8),
   },
   fixedButton: {
     position: "absolute", // ✅ 화면에 고정
     bottom: 0, // ✅ 하단에 배치
     width: "100%", // ✅ 전체 너비 차지
-    height: height * 0.07, // ✅ 버튼 높이 조정
+    height: height * 0.058, // ✅ 버튼 높이 조정
     alignItems: "center",
   },
   backgroundImage: {
@@ -420,33 +432,33 @@ const styles = StyleSheet.create({
   },
 
   tableContainer: {
-    marginTop: 5,
-    padding: 10,
-    paddingTop: 5,
+    marginTop: responsiveHeight(5),
+    padding: responsiveWidth(10),
+    paddingTop: responsiveHeight(5),
     alignItems: "center",
   },
   tableRow: { flexDirection: "row" },
   tableCell: {
     width: "20%",
-    borderWidth: 1,
-    borderColor: "#545454",
+    borderWidth: responsiveWidth(1),
+    borderColor: "#171717",
+    borderWidth: responsiveWidth(1),
+    backgroundColor: "rgb(243,243,243)",
+    padding: responsiveWidth(5),
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#1b1b1b",
     marginLeft: -1,
     marginTop: -1,
   },
   cellImage: {
-    width: 50,
-    height: 50,
-    marginBottom: 5, // 이미지 크기 조절
+    width: responsiveWidth(50),
+    height: responsiveWidth(50),
   },
-  cellText: { fontSize: 14, textAlign: "center", fontWeight: "bold" },
 
   itemContainer: {
     flexDirection: "row",
-    padding: 10,
-    borderBottomWidth: 1,
+    padding: responsiveWidth(10),
+    borderBottomWidth: responsiveWidth(1),
     borderBottomColor: "#ddd",
     alignItems: "center",
   },
@@ -458,18 +470,18 @@ const styles = StyleSheet.create({
   rankImageContainer: {
     flexDirection: "row",
     alignItems: "center", // 수평 정렬
-    marginRight: 10,
+    marginRight: responsiveWidth(10),
     width: "25%",
   },
   teamImage: {
     width: undefined,
-    height: 20,
+    height: responsiveHeight(18),
     aspectRatio: 1 / 1,
-    borderRadius: 25,
-    marginRight: 10,
+    borderRadius: responsiveWidth(25),
+    marginRight: responsiveWidth(10),
   },
   rankText: {
-    fontSize: 16,
+    fontSize: responsiveFontSize(18),
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -490,30 +502,32 @@ const styles = StyleSheet.create({
     color: "#888",
     width: "25%",
     textAlign: "center",
+    fontSize: responsiveFontSize(15),
   },
   rankTypeT: {
     fontFamily: "Pretendard-Bold",
     color: "#888",
     width: "50%",
     textAlign: "center",
+    fontSize: responsiveFontSize(15),
   },
   rankTypeP: {
     fontFamily: "Pretendard-Bold",
     color: "#888",
     width: "25%",
     textAlign: "center",
+    fontSize: responsiveFontSize(15),
   },
   snscontainer: {
     flexDirection: "row", // 가로로 정렬
     justifyContent: "space-between", // 버튼 사이 간격을 동일하게
-    paddingLeft: 90,
-    paddingRight: 90,
+    paddingHorizontal: responsiveWidth(90),
   },
   button: {
     width: "45",
     alignItems: "center",
 
-    padding: 5, // 버튼 안쪽 여백
+    padding: responsiveWidth(5),
   },
   snsimage: {
     width: 30, // 이미지 너비
@@ -524,16 +538,17 @@ const styles = StyleSheet.create({
 const hori = StyleSheet.create({
   textContainer: {
     position: "absolute",
-    bottom: 10,
-    left: 10,
-    right: 10,
-    padding: 5,
+    bottom: responsiveHeight(10),
+    left: responsiveWidth(10),
+    right: responsiveWidth(10),
+    padding: responsiveWidth(5),
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 5,
+    borderRadius: responsiveWidth(5),
   },
   newsTitle: {
     color: "white",
     fontSize: 14,
+    textAlign: "center",
     fontWeight: "bold",
   },
   slide: {

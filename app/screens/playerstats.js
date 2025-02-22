@@ -488,7 +488,7 @@ const PlayerStats = ({ route }) => {
                     style={{
                       borderRadius: responsiveWidth(5),
                       flexDirection: "row",
-                      height: 110,
+                      height: responsiveHeight(120),
                       alignItems: "center",
                       justifyContent: "center",
                     }}

@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet, View, Text, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  Alert,
+  BackHandler,
+} from "react-native";
 import { useFonts } from "expo-font";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import * as SplashScreen from "expo-splash-screen";
+import * as Network from "expo-network";
 
 //푸시 알림
 // 화면 컴포넌트들 (예시로 Esports와 Profile)
@@ -94,7 +102,32 @@ const App = () => {
     "Pretendard-Bold": require("../assets/fonts/Pretendard-Bold.otf"),
     BrigendsExpanded: require("../assets/fonts/BrigendsExpanded.otf"),
   });
+  useEffect(() => {
+    const getNetworkState = async () => {
+      try {
+        const networkState = await Network.getNetworkStateAsync();
+        if (!networkState.isConnected) {
+          Alert.alert(
+            "네트워크 연결 오류",
+            "네트워크 연결을 확인해주세요.",
+            [
+              {
+                text: "확인",
+                onPress: () => {
+                  getNetworkState();
+                },
+              },
+            ],
+            { cancelable: false }
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching network state:", error);
+      }
+    };
 
+    getNetworkState();
+  }, []); // 빈 배열을 넣어서 처음 한 번만 실행되도록 설정
   useEffect(() => {
     if (fontsLoaded) {
       setAppReady(true); // 폰트가 로드되면 앱 준비 상태를 true로 설정

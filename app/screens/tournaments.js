@@ -105,7 +105,7 @@ const Tournaments = () => {
   const sendToken = async () => {
     if (expoPushToken) {
       try {
-        const response = axios.post("http://192.168.0.8:3000/save-token", {
+        const response = axios.post("http://13.125.185.217:3000/save-token", {
           expoPushToken,
         });
         await console.log("서버에 토큰 저장 성공:", response, expoPushToken);
@@ -119,7 +119,7 @@ const Tournaments = () => {
   const changeToken = async () => {
     if (expoPushToken) {
       try {
-        const response = axios.post("http://192.168.0.8:3000/change-token", {
+        const response = axios.post("http://13.125.185.217:3000/change-token", {
           expoPushToken,
         });
         await console.log("서버에 토큰 저장 성공:", response, expoPushToken);
@@ -134,7 +134,7 @@ const Tournaments = () => {
     if (expoPushToken) {
       try {
         const response = axios.post(
-          "http://192.168.0.8:3000/send-push-notification",
+          "http://13.125.185.217:3000/send-push-notification",
           {
             expoPushToken,
             title: "테스ㅡ트",
@@ -437,19 +437,23 @@ const Tournaments = () => {
         </Text>
       </View>
       <View>
-        <Calendar
-          current={new Date().toISOString().split("T")[0]}
-          markedDates={markedDates} // ✅ 일정 있는 날짜 + 선택된 날짜 반영
-          onDayPress={handleDayPress}
-          theme={{
-            calendarBackground: "black",
-            monthTextColor: "white",
-            dayTextColor: "white",
-            textSectionTitleColor: "rgb(241,249,88)",
-            todayTextColor: "rgb(241,249,88)",
-            arrowColor: "rgb(241,249,88)",
-          }}
-        />
+        <View>
+          <Calendar
+            current={new Date().toISOString().split("T")[0]}
+            hideExtraDays={true}
+            markedDates={markedDates} // ✅ 일정 있는 날짜 + 선택된 날짜 반영
+            onDayPress={handleDayPress}
+            theme={{
+              calendarBackground: "black",
+              monthTextColor: "white",
+              dayTextColor: "white",
+              textSectionTitleColor: "rgb(241,249,88)",
+              todayTextColor: "rgb(241,249,88)",
+              arrowColor: "rgb(241,249,88)",
+            }}
+          />
+        </View>
+
         <View
           style={{
             flexDirection: "row",
@@ -486,14 +490,9 @@ const Tournaments = () => {
               keyExtractor={(item) => item.matchScheduleId}
               style={{
                 paddingBottom: responsiveHeight(30),
-                height: height * 0.35,
+                height: width,
               }}
               contentContainerStyle={{ paddingBottom: responsiveHeight(50) }}
-              // ListFooterComponent={
-              //   <View
-              //     style={{ height: 150, width: width, backgroundColor: "red" }}
-              //   />
-              // } // 리스트 끝에 여백 추가
             />
           ) : (
             <Text style={styles.noScheduleText}>
@@ -506,68 +505,6 @@ const Tournaments = () => {
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "black",
-//     paddingTop: 50,
-
-//     paddingHorizontal: 20,
-//   },
-//   scheduleContainer: {
-//     marginTop: 5,
-//     paddingTop: 10,
-
-//     paddingHorizontal: 15,
-//     marginBottom: 10,
-//   },
-
-//   tournamentTitle: {
-//     fontFamily: "Pretendard-Bold",
-//     color: "white",
-//     fontSize: 16,
-//     maxWidth: width * 0.65,
-//   },
-//   tournamentItem: {
-//     paddingVertical: 10,
-//     paddingHorizontal: 15,
-//     backgroundColor: "#1A1A1A",
-//     borderRadius: 10,
-//     marginBottom: 15,
-//     borderTopColor: "rgb(241,249,88)",
-//     borderTopWidth: 2,
-//     alignItems: "center",
-//     flexDirection: "row",
-//     flexWrap: "wrap", // 텍스트와 버튼이 겹치지 않게 함
-//   },
-//   tournamentTitle2: {
-//     fontFamily: "Pretendard-Bold",
-//     color: "white",
-//     fontSize: 16,
-//     flexShrink: 1, // 텍스트가 공간을 초과할 경우 잘리도록 설정
-//   },
-//   tournamentDate: {
-//     fontFamily: "Pretendard-Regular",
-//     color: "#B4B4B4",
-//     fontSize: 14,
-//     flexShrink: 1, // 텍스트가 공간을 초과할 경우 잘리도록 설정
-//   },
-//   // tournamentDate: {
-//   //   fontFamily: "Pretendard-Regular",
-//   //   fontSize: 14,
-//   //   color: "lightgrey",
-//   // },
-//   noScheduleText: {
-//     fontSize: 16,
-//     color: "#777",
-//     textAlign: "center",
-//   },
-//   scrollContainer: {
-//     padding: 15,
-//     paddingTop: 0,
-//     paddingBottom: 50,
-//   },
-// });
 const styles = StyleSheet.create({
   container: {
     flex: 1,
