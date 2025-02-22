@@ -85,18 +85,19 @@ const TournamentDetail = ({ route }) => {
         {tournamentData !== null &&
           tournamentData.startAt !== null &&
           tournamentData.endAt !== null && (
-            <View
-              style={{ alignItems: "center", marginTop: responsiveHeight(5) }}
-            >
+            <View style={{ alignItems: "center" }}>
               <View
                 style={{
                   alignItems: "center",
-                  backgroundColor: "rgb(241,249,88)",
-                  paddingTop: responsiveHeight(10),
+                  backgroundColor: "#171717",
+                  paddingVertical: responsiveHeight(10),
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  width: width,
                 }}
               >
                 <Image
-                  source={{ uri: tournamentData.darkLogoUrl }}
+                  source={{ uri: tournamentData.logoUrl }}
                   style={styles.image}
                 />
                 <Text
@@ -107,89 +108,113 @@ const TournamentDetail = ({ route }) => {
                   {tournamentData.shortTitle}
                 </Text>
               </View>
-
-              <Text
-                style={{
-                  marginTop: responsiveHeight(10),
-                  color: "rgb(241,249,88)",
-                  fontSize: responsiveFontSize(20),
-                  fontFamily: "Pretendard-Bold",
-                  width: width * 0.9,
-                }}
-              >
-                일정
-              </Text>
-              <Text
-                style={styles.descriptionLLL}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {tournamentData.startAt ? tournamentData.startAt : "정보 없음"}{" "}
-                ~ {tournamentData.endAt ? tournamentData.endAt : "정보 없음"}
-              </Text>
-              <Text
-                style={{
-                  marginTop: responsiveHeight(10),
-                  color: "rgb(241,249,88)",
-                  fontSize: responsiveFontSize(20),
-                  fontFamily: "Pretendard-Bold",
-                  width: width * 0.9,
-                }}
-              >
-                상금
-              </Text>
-              <Text
-                style={styles.description}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {tournamentData.prize ? tournamentData.prize : "정보 없음"}
-              </Text>
-              <Text
-                style={{
-                  marginTop: responsiveHeight(10),
-                  color: "rgb(241,249,88)",
-                  fontSize: responsiveFontSize(20),
-                  fontFamily: "Pretendard-Bold",
-                  width: width * 0.9,
-                }}
-              >
-                참가지역
-              </Text>
-              <Text style={styles.description}>
-                {tournamentData.regionType
-                  ? tournamentData.regionType
-                  : "정보 없음"}
-              </Text>
-              <Text
-                style={{
-                  marginTop: responsiveHeight(10),
-                  color: "rgb(241,249,88)",
-                  fontSize: responsiveFontSize(20),
-                  fontFamily: "Pretendard-Bold",
-                  width: width * 0.9,
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                장소
-              </Text>
-              <Text style={styles.descriptionL}>
-                {tournamentData.place ? tournamentData.place : "정보 없음"}
-              </Text>
+              <View style={{ backgroundColor: "rgb(41,41,41)", width: width }}>
+                <View
+                  style={{
+                    width: width * 0.3,
+                    backgroundColor: "rgb(241,249,88)",
+                    padding: responsiveWidth(10),
+                    paddingLeft: responsiveWidth(15),
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "Pretendard-Bold",
+                      fontSize: responsiveFontSize(15),
+                    }}
+                  >
+                    정보
+                  </Text>
+                </View>
+              </View>
+              <View style={{ padding: responsiveWidth(10), width: width }}>
+                <Text
+                  style={{
+                    color: "rgb(241,249,88)",
+                    fontSize: responsiveFontSize(20),
+                    fontFamily: "Pretendard-Bold",
+                  }}
+                >
+                  일정
+                </Text>
+                <Text
+                  style={styles.descriptionLLL}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {tournamentData.startAt
+                    ? tournamentData.startAt
+                    : "정보 없음"}{" "}
+                  ~ {tournamentData.endAt ? tournamentData.endAt : "정보 없음"}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: responsiveHeight(10),
+                    color: "rgb(241,249,88)",
+                    fontSize: responsiveFontSize(20),
+                    fontFamily: "Pretendard-Bold",
+                  }}
+                >
+                  상금
+                </Text>
+                <Text
+                  style={styles.description}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {tournamentData.prize ? tournamentData.prize : "정보 없음"}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: responsiveHeight(10),
+                    color: "rgb(241,249,88)",
+                    fontSize: responsiveFontSize(20),
+                    fontFamily: "Pretendard-Bold",
+                  }}
+                >
+                  참가지역
+                </Text>
+                <Text style={styles.description}>
+                  {tournamentData.regionType
+                    ? tournamentData.regionType
+                    : "정보 없음"}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: responsiveHeight(10),
+                    color: "rgb(241,249,88)",
+                    fontSize: responsiveFontSize(20),
+                    fontFamily: "Pretendard-Bold",
+                  }}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  장소
+                </Text>
+                <Text style={styles.descriptionL}>
+                  {tournamentData.place ? tournamentData.place : "정보 없음"}
+                </Text>
+              </View>
             </View>
           )}
         {tournamentData !== null && tournamentData.winnerTeamId !== null && (
-          <View style={{ alignItems: "center", marginTop: 10 }}>
+          <View
+            style={{
+              alignItems: "center",
+              marginTop: 10,
+              // width: width,
+              paddingHorizontal: responsiveWidth(15),
+            }}
+          >
             <Text style={styles.titleW} numberOfLines={1}>
               WINNER
             </Text>
             <Image
               style={{
-                width: width * 0.9,
+                width: "100%",
                 height: undefined,
                 aspectRatio: 16 / 9,
-                marginTop: responsiveHeight(10),
               }}
               source={{ uri: tournamentData.winnerTeamMobileImageUrl }}
             />
@@ -199,8 +224,8 @@ const TournamentDetail = ({ route }) => {
                 alignItems: "center", // 세로 중앙 정렬
                 justifyContent: "center", // 가로 중앙 정렬
                 marginBottom: responsiveHeight(15),
-                width: width * 0.9,
-                backgroundColor: "rgba(241,249,88,1)",
+                width: "100%",
+                backgroundColor: "rgba(243,243,243,1)",
               }}
             >
               <Image
@@ -228,37 +253,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: responsiveWidth(10),
     backgroundColor: "black",
   },
-  image: { width: responsiveWidth(85), height: undefined, aspectRatio: 1 / 1 }, // 이미지 크기
+  image: { width: width * 0.2, height: undefined, aspectRatio: 1 / 1 }, // 이미지 크기
   title: {
     marginTop: responsiveWidth(5),
     fontSize: responsiveFontSize(25),
     fontWeight: "bold",
-    textAlign: "center",
+
     fontFamily: "WinnerSans-CompBold",
-    borderBottomColor: "rgb(241,249,88)",
-    borderBottomWidth: responsiveWidth(2),
-    width: width * 0.9,
+
     paddingBottom: responsiveWidth(10),
-    // color: "white",
+    color: "white",
   },
   description: {
     marginTop: responsiveHeight(5),
     color: "white",
     fontFamily: "WinnerSans-CompBold",
-    width: width * 0.9,
+    width: width,
     fontSize: responsiveFontSize(20),
   },
   descriptionL: {
     marginTop: responsiveHeight(5),
     fontFamily: "WinnerSans-CompBold",
     color: "white",
-    width: width * 0.9,
+    width: width,
     fontSize: responsiveFontSize(20),
-    borderBottomColor: "rgb(241,249,88)",
-    borderBottomWidth: responsiveHeight(2),
     paddingBottom: responsiveHeight(15),
   },
   descriptionLL: {
@@ -277,16 +297,13 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(5),
   },
   titleW: {
-    marginTop: responsiveWidth(5),
     fontSize: responsiveFontSize(25),
+    backgroundColor: "rgb(241,249,88)",
     fontWeight: "bold",
     textAlign: "center",
     fontFamily: "WinnerSans-CompBold",
-    borderBottomColor: "rgb(241,249,88)",
-    borderBottomWidth: responsiveWidth(2),
-    width: width * 0.9,
-    paddingBottom: responsiveWidth(15),
-    color: "white",
+    paddingVertical: responsiveWidth(10),
+    width: "100%",
   },
 });
 

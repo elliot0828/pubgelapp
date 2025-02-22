@@ -42,6 +42,7 @@ const Esports = ({ navigation }) => {
   const [rankingdata, setrankingData] = useState([]);
   const [gptdata, setgptData] = useState([]);
   const [ytdata, setytData] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -189,8 +190,7 @@ const Esports = ({ navigation }) => {
                     style={styles.tableCell}
                     onPress={() =>
                       navigation.navigate("Gpt", {
-                        title: item.title,
-                        img: item.img,
+                        id: item.teamId,
                       })
                     }
                   >
@@ -441,9 +441,9 @@ const styles = StyleSheet.create({
   tableCell: {
     width: "20%",
     borderWidth: responsiveWidth(1),
-    borderColor: "#171717",
+    borderColor: "#545454",
     borderWidth: responsiveWidth(1),
-    backgroundColor: "rgb(243,243,243)",
+    backgroundColor: "#171717",
     padding: responsiveWidth(5),
     alignItems: "center",
     justifyContent: "center",

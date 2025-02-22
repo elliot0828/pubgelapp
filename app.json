@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Stand United",
+    "name": "PUBG Esports Mobile",
     "slug": "pel",
     "version": "1.0.1",
     "orientation": "portrait",
@@ -35,6 +35,16 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@react-native-firebase/app",
+
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -59,22 +69,10 @@
         {
           "fonts": [
             "./assets/fonts/AgencyFB-Bold.ttf",
-            "./assets/fonts/HyperwaveThree.otf",
-            "./assets/fonts/SpaceMono-Regular.ttf",
-            "./assets/fonts/Pretendard-Black.otf",
             "./assets/fonts/Pretendard-Bold.otf",
-            "./assets/fonts/Pretendard-ExtraBold.otf",
-            "./assets/fonts/Pretendard-ExtraLight.otf",
-            "./assets/fonts/Pretendard-Light.otf",
-            "./assets/fonts/Pretendard-Medium.otf",
             "./assets/fonts/Pretendard-Regular.otf",
-            "./assets/fonts/Pretendard-SemiBold.otf",
-            "./assets/fonts/Pretendard-Thin.otf",
             "./assets/fonts/PUBGBattlegrounds-Textured.ttf",
             "./assets/fonts/WinnerSans-CompBold.otf",
-            "./assets/fonts/WinnerSans-CompRegular.otf",
-            "./assets/fonts/WinnerSans-WideBold.otf",
-            "./assets/fonts/WinnerSans-WideRegular.otf",
             "./assets/fonts/BrigendsExpanded.otf"
           ]
         }

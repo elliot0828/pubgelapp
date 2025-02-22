@@ -114,7 +114,7 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.scrollContainer}>
         <View>
           <Text
             style={{
@@ -193,7 +193,7 @@ const Profile = () => {
         <TouchableOpacity style={styles.searchBTN} onPress={handleSearch}>
           <Text style={styles.searchText}>전적 검색하기</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
