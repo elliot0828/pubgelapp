@@ -20,6 +20,7 @@ import Esports from "./screens/esports";
 import PlayerStats from "./screens/playerstats";
 import Tournaments from "./screens/tournaments";
 import tournamentDetail from "./screens/tournamentDetail";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -110,16 +111,19 @@ const App = () => {
   });
   async function requestPermission() {
     const authStatus = await messaging().hasPermission();
-    const isSubscribed = JSON.parse(await AsyncStorage.getItem("isSubscribed"));
+    const isAccepted = JSON.parse(await AsyncStorage.getItem("isAccepted"));
+
+    if (authStatus == 1) {
+      await AsyncStorage.setItem("isAccepted", JSON.stringify(true));
+    } else {
+      await AsyncStorage.setItem("isAccepted", JSON.stringify(false));
+    }
+    console.log("authStatus:", authStatus);
     if (
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL
     ) {
-      if (!isSubscribed) {
-        await AsyncStorage.setItem("isSubscribed", JSON.stringify(true));
-        subscribeToTournamentTopic();
-      } else {
-      }
+      await AsyncStorage.setItem("isAccepted", JSON.stringify(true));
     } else {
       const permissionStatus = await messaging().requestPermission();
       if (
@@ -133,7 +137,11 @@ const App = () => {
         }
       } else {
         await AsyncStorage.setItem("isAccepted", JSON.stringify(false));
-        if (subscriptionStatus == null) {
+        const subscribedStatus = await JSON.parse(
+          AsyncStorage.getItem("isSubscribed")
+        );
+
+        if (subscribedStatus == null) {
           await AsyncStorage.setItem("isSubscribed", JSON.stringify(false));
         }
       }

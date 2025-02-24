@@ -40,8 +40,6 @@ const Tournaments = () => {
   });
 
   const [markedDates, setMarkedDates] = useState({});
-
-  const [tournamentData, setTournaments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toLocaleDateString("sv-SE")
   );
@@ -56,14 +54,14 @@ const Tournaments = () => {
     const subscribedStatus = JSON.parse(
       await AsyncStorage.getItem("isSubscribed")
     );
-
+    console.log("권한 허용", acceptedStatus);
+    console.log("구독 여부", subscribedStatus);
     if (acceptedStatus === true && subscribedStatus === true) {
       setIsEnabled(true);
     } else {
       setIsEnabled(false);
     }
-
-    console.log(acceptedStatus, subscribedStatus, isEnabled);
+    console.log("스위치", isEnabled);
   }, []);
 
   useEffect(() => {
