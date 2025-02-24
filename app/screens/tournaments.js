@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,8 +9,9 @@ import {
   Linking,
   SafeAreaView,
   TouchableOpacity,
-  ScrollView,
   Switch,
+  AppState,
+  Alert,
 } from "react-native";
 import responsiveSize from "../utils/responsiveSize";
 import messaging from "@react-native-firebase/messaging";
@@ -18,8 +19,8 @@ const { responsiveWidth, responsiveHeight, responsiveFontSize } =
   responsiveSize;
 import { useNavigation } from "@react-navigation/native";
 import { Calendar } from "react-native-calendars";
-import { collection, getDocs } from "firebase/firestore";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { useFonts } from "expo-font";
 import TournamentContext from "../tournamentContext";
@@ -28,7 +29,7 @@ const { width, height } = Dimensions.get("window");
 const Tournaments = () => {
   const { tournamentsData, loading } = useContext(TournamentContext);
 
-  const navigation = useNavigation(); // 네비게이션 훅 사용
+  const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
     "PUBGBattlegrounds-Textured": require("../../assets/fonts/PUBGBattlegrounds-Textured.ttf"),
     "WinnerSans-CompBold": require("../../assets/fonts/WinnerSans-CompBold.otf"),
@@ -42,20 +43,34 @@ const Tournaments = () => {
 
   const [tournamentData, setTournaments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toLocaleDateString("sv-SE")
   );
-
   const [selectedTournaments, setSelectedTournaments] = useState([]);
   const [isEnabled, setIsEnabled] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isAccepted, setIsAccepted] = useState(false);
   const topic = "tournament"; // 토픽명
 
-  const checkSubscription = async () => {
-    const authStatus = await messaging().hasPermission();
-    if (authStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-      setIsEnabled(true); // 알림 허용된 경우 기본값 true
+  const checkStatus = useCallback(async () => {
+    const acceptedStatus = JSON.parse(await AsyncStorage.getItem("isAccepted"));
+    const subscribedStatus = JSON.parse(
+      await AsyncStorage.getItem("isSubscribed")
+    );
+
+    if (acceptedStatus === true && subscribedStatus === true) {
+      setIsEnabled(true);
+    } else {
+      setIsEnabled(false);
     }
-  };
+
+    console.log(acceptedStatus, subscribedStatus, isEnabled);
+  }, []);
+
   useEffect(() => {
+    checkStatus();
+  }, [checkStatus]);
+  useEffect(() => {
+    checkStatus();
     const newMarkedDates = {};
     tournamentsData.forEach((doc) => {
       newMarkedDates[doc.matchDate] = {
@@ -66,14 +81,13 @@ const Tournaments = () => {
     setMarkedDates({
       ...newMarkedDates,
       [selectedDate]: {
-        ...newMarkedDates[selectedDate], // 기존 데이터 유지
+        ...newMarkedDates[selectedDate],
         selected: true,
         selectedColor: "rgba(241,249,88,1)",
         selectedTextColor: "black",
       },
     });
 
-    // 오늘 날짜 기준으로 초기 데이터 설정
     setSelectedTournaments(
       tournamentsData.filter((t) => t.matchDate === selectedDate)
     );
@@ -82,7 +96,6 @@ const Tournaments = () => {
   const handleDayPress = (day) => {
     const newSelectedDate = day.dateString;
 
-    // 선택된 날짜의 토너먼트 데이터 필터링
     const filteredTournaments = tournamentsData.filter(
       (tournament) => tournament.matchDate === newSelectedDate
     );
@@ -227,14 +240,62 @@ const Tournaments = () => {
     </TouchableOpacity>
   );
   const toggleSwitch = async () => {
-    if (isEnabled) {
-      messaging().unsubscribeFromTopic(topic);
-      console.log("토너먼트 알림 해제됨");
-    } else {
-      messaging().subscribeToTopic(topic);
-      console.log("토너먼트 알림 구독됨");
+    setIsEnabled((prev) => !prev); // 먼저 상태를 즉시 업데이트하여 UI 반응 속도를 높임
+
+    const newStatus = !isEnabled;
+
+    try {
+      await AsyncStorage.setItem("isSubscribed", JSON.stringify(newStatus));
+
+      if (newStatus) {
+        const permissionStatus = await messaging().hasPermission();
+        if (permissionStatus !== messaging.AuthorizationStatus.AUTHORIZED) {
+          console.log("알림 권한 요청 중...");
+          Alert.alert(
+            "알림 권한이 필요합니다.",
+            "설정에서 알림을 허용해주세요.",
+            [
+              {
+                text: "취소",
+                style: "cancel",
+                onPress: () => setIsEnabled(false),
+              },
+              {
+                text: "설정으로 이동",
+                onPress: () => {
+                  Linking.openSettings();
+
+                  const subscription = AppState.addEventListener(
+                    "change",
+                    async (nextAppState) => {
+                      if (nextAppState === "active") {
+                        const updatedPermission =
+                          await messaging().hasPermission();
+                        if (
+                          updatedPermission ===
+                          messaging.AuthorizationStatus.AUTHORIZED
+                        ) {
+                          await messaging().subscribeToTopic(topic);
+                          console.log("토너먼트 알림 구독됨");
+                        } else {
+                          setIsEnabled(false);
+                        }
+                        subscription.remove();
+                      }
+                    }
+                  );
+                },
+              },
+            ]
+          );
+        }
+        await messaging().subscribeToTopic(topic);
+      } else {
+        await messaging().unsubscribeFromTopic(topic);
+      }
+    } catch (error) {
+      setIsEnabled(!newStatus);
     }
-    setIsEnabled(!isEnabled);
   };
 
   return (
@@ -257,7 +318,7 @@ const Tournaments = () => {
           <Calendar
             current={new Date().toISOString().split("T")[0]}
             hideExtraDays={true}
-            markedDates={markedDates} // ✅ 일정 있는 날짜 + 선택된 날짜 반영
+            markedDates={markedDates}
             onDayPress={handleDayPress}
             theme={{
               calendarBackground: "black",
@@ -343,7 +404,7 @@ const styles = StyleSheet.create({
     borderTopWidth: responsiveHeight(2),
     alignItems: "center",
     flexDirection: "row",
-    flexWrap: "wrap", // 텍스트와 버튼이 겹치지 않게 함
+    flexWrap: "wrap",
   },
   tournamentTitle: {
     fontFamily: "Pretendard-Bold",
@@ -370,4 +431,3 @@ const styles = StyleSheet.create({
   },
 });
 export default Tournaments;
-Tournaments.js;

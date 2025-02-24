@@ -1,4 +1,4 @@
-import { React, useRef, useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,15 +15,15 @@ import { Linking } from "react-native";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useFonts } from "expo-font";
 import { ScrollView } from "react-native-gesture-handler";
-// import { SafeAreaView } from "react-native-safe-area-context";
+
 const { width, height } = Dimensions.get("window");
-import initFirebase from "../firebase"; // 경로는 파일 구조에 맞게 수정
+import initFirebase from "../firebase";
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from "../utils/responsiveSize";
-const { app, auth, db } = initFirebase();
+const { db } = initFirebase();
 
 const Esports = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -35,8 +35,6 @@ const Esports = ({ navigation }) => {
     BrigendsExpanded: require("../../assets/fonts/BrigendsExpanded.otf"),
   });
 
-  const carouselRef = useRef(null);
-
   const [esportsdata, setesportsData] = useState([]);
 
   const [rankingdata, setrankingData] = useState([]);
@@ -46,7 +44,6 @@ const Esports = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 데이터 쿼리 실행
         const esportsQuery = await getDocs(collection(db, "esportsNews"));
         if (esportsQuery.empty) {
           console.log("이스포츠 데이터가 없습니다.");
@@ -57,7 +54,6 @@ const Esports = ({ navigation }) => {
           });
           const latestEsports = esportsData.slice(-5);
           setesportsData(latestEsports);
-          // console.log("이스포츠 데이터:", latestEsports); // 여기서 데이터를 확인해보세요
         }
 
         const rankingQuery = await getDocs(
@@ -72,7 +68,6 @@ const Esports = ({ navigation }) => {
             prankingData.push({ id: doc.id, ...doc.data() });
           });
           setrankingData(prankingData);
-          //  console.log("이스포츠 데이터:", prankingData); // 여기서 데이터를 확인해보세요
         }
 
         const gptQuery = await getDocs(collection(db, "gpt"));
@@ -85,7 +80,6 @@ const Esports = ({ navigation }) => {
             gptData.push({ id: doc.id, ...doc.data() });
           });
           setgptData(gptData);
-          //  console.log("이스포츠 데이터:", prankingData); // 여기서 데이터를 확인해보세요
         }
 
         const ytQuery = await getDocs(
@@ -104,7 +98,6 @@ const Esports = ({ navigation }) => {
             ytData.push({ id: doc.id, ...doc.data() });
           });
           setytData(ytData);
-          //   console.log("영상 데이터:", ytData); // 여기서 데이터를 확인해보세요
         }
       } catch (e) {
         console.error("Error getting documents: ", e);
@@ -112,18 +105,18 @@ const Esports = ({ navigation }) => {
     };
 
     fetchData();
-  }, []); // 빈 배열을 넣어 한 번만 실행되도록 함
+  }, []);
 
   const getBackgroundColor = (rank) => {
     switch (rank) {
       case "#1":
         return "rgb(241,249,88)";
       case "#2":
-        return "#ffffff"; // Silver
+        return "#ffffff";
       case "#3":
-        return "#ffffff"; // 기본 배경색은 흰색
+        return "#ffffff";
       default:
-        return "rgb(243,243,243)"; // 기본 배경색은 흰색
+        return "rgb(243,243,243)";
     }
   };
   return (
@@ -148,7 +141,7 @@ const Esports = ({ navigation }) => {
           width={width * 0.9}
           height={width * 0.6}
           autoPlay={true}
-          autoPlayInterval={3000} // 3초마다 자동 이동
+          autoPlayInterval={3000}
           data={esportsdata}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => Linking.openURL(item.link)}>
@@ -205,7 +198,7 @@ const Esports = ({ navigation }) => {
         </View>
         <View
           style={{
-            marginTop: responsiveHeight(15),
+            marginTop: responsiveHeight(8),
             borderTopColor: "rgb(241,249,88)",
             borderWidth: responsiveWidth(3),
           }}
@@ -286,7 +279,7 @@ const Esports = ({ navigation }) => {
           width={width * 0.9}
           height={width * 0.54}
           autoPlay={true}
-          autoPlayInterval={2000} // 3초마다 자동 이동
+          autoPlayInterval={2000}
           data={ytdata}
           mode={"horizontal-stack"}
           modeConfig={{
@@ -352,18 +345,18 @@ const Esports = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         onPress={() => Linking.openURL("https://www.pubgplayerstour.kr/")}
-        style={styles.fixedButton} // ✅ 스타일 적용
+        style={styles.fixedButton}
       >
         <ImageBackground
           source={{
             uri: "https://v1.padlet.pics/3/image.webp?t=c_limit%2Cdpr_2%2Ch_215%2Cw_1027&url=https%3A%2F%2Fu1.padletusercontent.com%2Fuploads%2Fpadlet-uploads%2F1711091133%2F0dbdf64cd60d11810049d767f9e0a6ea%2Fpubg_deston_new_map_3_4.jpg%3Fexpiry_token%3D5WaHZRdGG3LkUVQGy3SZ-zdRtq89aJeottSBaF_Hii8EGDVBG-vnLc5ZfL_2GiKosWMOCkHArMcc8LorETHcZ0EQapAzf-1EUkH200RSJK6rnLR9uEkIRzaa1WbMw40_mOCjXQG4BBMy7fJqeeyvIohnKrt8ycetCZ50YhU7n0w_Kldzinwx-IMRRVFtq1RddQsmvFr2S-kMJOylt55NXK43jPSikcI_HFrBkG37Ikc%3Dr",
           }}
-          style={styles.backgroundImage} // ✅ 새로운 스타일 추가
+          style={styles.backgroundImage}
           resizeMode="cover"
         >
           <View style={styles.overlay}>
             <Text style={styles.buttonText}>
-              PUBG 플레이어스 투어에 참여하세요!{"    >>"}
+              PUBG 플레이어스 투어에 참여하세요!
             </Text>
           </View>
         </ImageBackground>
@@ -377,12 +370,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#000",
-    // paddingVertical: responsiveHeight(15),
-
-    // width: width,
   },
   scrollContainer: {
-    // padding: 15,
     alignItems: "center",
     paddingTop: 0,
     paddingBottom: responsiveHeight(50),
@@ -406,20 +395,20 @@ const styles = StyleSheet.create({
     marginTop: responsiveHeight(8),
   },
   fixedButton: {
-    position: "absolute", // ✅ 화면에 고정
-    bottom: 0, // ✅ 하단에 배치
-    width: "100%", // ✅ 전체 너비 차지
-    height: height * 0.058, // ✅ 버튼 높이 조정
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: height * 0.058,
     alignItems: "center",
   },
   backgroundImage: {
     width: "100%",
     height: "100%",
-    justifyContent: "center", // ✅ 텍스트 중앙 정렬
+    justifyContent: "center",
     alignItems: "center",
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // ✅ 반투명 배경
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     width: "100%",
     height: "100%",
     justifyContent: "center",
@@ -469,7 +458,7 @@ const styles = StyleSheet.create({
   },
   rankImageContainer: {
     flexDirection: "row",
-    alignItems: "center", // 수평 정렬
+    alignItems: "center",
     marginRight: responsiveWidth(10),
     width: "25%",
   },
@@ -519,8 +508,8 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(15),
   },
   snscontainer: {
-    flexDirection: "row", // 가로로 정렬
-    justifyContent: "space-between", // 버튼 사이 간격을 동일하게
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: responsiveWidth(90),
   },
   button: {
@@ -530,9 +519,9 @@ const styles = StyleSheet.create({
     padding: responsiveWidth(5),
   },
   snsimage: {
-    width: 30, // 이미지 너비
-    height: 30, // 이미지 높이
-    resizeMode: "contain", // 이미지 비율 유지
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
   },
 });
 const hori = StyleSheet.create({

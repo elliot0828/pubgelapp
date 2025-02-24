@@ -16,12 +16,12 @@ import responsiveSize, {
 } from "../utils/responsiveSize";
 
 import initFirebase from "../firebase";
-const { app, auth, db } = initFirebase();
-import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+const { db } = initFirebase();
+import { collection, getDocs } from "firebase/firestore";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
 const TournamentDetail = ({ route }) => {
-  const navigation = useNavigation(); // 네비게이션 훅 사용
+  const navigation = useNavigation();
   const tournamentId = route.params.data.tournamentId;
   const [tournamentData, setTournament] = useState(null);
   const [fontsLoaded] = useFonts({

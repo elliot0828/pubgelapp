@@ -67,7 +67,6 @@ const PlayerStats = ({ route }) => {
   const [selectedGameMode, setSelectedGameMode] = useState("normal");
   const [isNormalSelected, setIsNormalSelected] = useState(true);
   const navigation = useNavigation();
-  const [fontLoaded, setFontLoaded] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(seasonList);
@@ -879,16 +878,16 @@ const run = StyleSheet.create({
     width: "90%",
     paddingBottom: responsiveHeight(10),
     marginTop: responsiveHeight(10),
-    justifyContent: "center", // 세로 중앙 정렬
-    alignItems: "center", // 가로 중앙 정렬
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   hc: {
     width: "90%",
     paddingBottom: responsiveHeight(10),
     marginTop: responsiveHeight(10),
-    justifyContent: "center", // 세로 중앙 정렬
-    alignItems: "center", // 가로 중앙 정렬
+    justifyContent: "center",
+    alignItems: "center",
   },
   lsh: {
     color: "black",

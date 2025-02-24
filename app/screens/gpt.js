@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,15 +10,7 @@ import {
 } from "react-native";
 import initFirebase from "../firebase";
 import { useFonts } from "expo-font";
-import {
-  collection,
-  getDoc,
-  limit,
-  orderBy,
-  getDocs,
-  query,
-  doc,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 const { width, height } = Dimensions.get("window");
 const { db } = initFirebase();
 import { useNavigation } from "@react-navigation/native";
@@ -121,17 +113,32 @@ const Gpt = ({ route }) => {
               >
                 {gptdata.regionType}
               </Text>
-              <View style={{ backgroundColor: "black", flexDirection: "row" }}>
-                <Text
+              <View
+                style={{
+                  backgroundColor: "black",
+                  flexDirection: "row",
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View
                   style={{
+                    padding: responsiveWidth(3),
                     borderColor: "rgba(241,249,88,0.5)",
                     borderWidth: responsiveWidth(1),
-                    padding: responsiveWidth(2),
-                    fontSize: responsiveFontSize(15),
+                    borderRightWidth: 0,
                   }}
                 >
-                  👍
-                </Text>
+                  <Image
+                    source={require("../../assets/images/thumb.png")}
+                    style={{
+                      width: width * 0.04,
+                      height: width * 0.04,
+                      margin: responsiveWidth(0.5),
+                    }}
+                  />
+                </View>
+
                 <Text
                   style={{
                     color: "rgb(241,249,88)",
@@ -142,6 +149,8 @@ const Gpt = ({ route }) => {
                     borderColor: "rgba(241,249,88,0.5)",
                     borderWidth: responsiveWidth(1),
                     padding: responsiveWidth(2),
+                    paddingHorizontal: responsiveHeight(5),
+                    textAlign: "center",
                   }}
                 >
                   {gptdata.likeCount}

@@ -12,7 +12,7 @@ import {
 import Carousel from "react-native-reanimated-carousel";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
-import { ScrollView } from "react-native-gesture-handler";
+
 const { width, height } = Dimensions.get("window");
 import responsiveSize from "../utils/responsiveSize";
 
@@ -273,18 +273,18 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(16),
   },
   selectedPlatformBTN: {
-    backgroundColor: "black", // 선택된 버튼 색상 (파란색)
+    backgroundColor: "black",
     borderWidth: responsiveWidth(2),
     borderColor: "rgb(241,249,88)",
     paddingHorizontal: responsiveWidth(10),
     paddingVertical: responsiveHeight(10),
   },
   platformTEXT: {
-    color: "#000", // 기본 텍스트 색상
+    color: "#000",
     fontWeight: "bold",
   },
   selectedPlatformTEXT: {
-    color: "#fff", // 선택된 경우 텍스트 색상 (흰색)
+    color: "#fff",
   },
 });
 

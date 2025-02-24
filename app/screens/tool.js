@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,11 +8,13 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator,
+  FlatList,
   Dimensions,
 } from "react-native";
 import responsiveSize from "../utils/responsiveSize";
-
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import initFirebase from "../firebase";
+const { db } = initFirebase();
 const { responsiveWidth, responsiveHeight, responsiveFontSize } =
   responsiveSize;
 const { width, height } = Dimensions.get("window");
@@ -32,6 +34,31 @@ const Tool = ({ navigation }) => {
   const [ign, setIgn] = useState("");
   const [result, setResult] = useState(null);
   const [Loading, setLoading] = useState(false);
+  const [rankingdata, setrankingData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const rankingQuery = await getDocs(
+          query(collection(db, "tpRanking"), orderBy("point", "desc"))
+        );
+
+        if (rankingQuery.empty) {
+          console.log("파워랭킹 데이터가 없습니다.");
+        } else {
+          const prankingData = [];
+          rankingQuery.forEach((doc) => {
+            prankingData.push({ id: doc.id, ...doc.data() });
+          });
+          setrankingData(prankingData);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchData();
+  }, []);
   const handleSearch = async () => {
     setLoading(true);
     let playerOBJ = {
@@ -39,14 +66,14 @@ const Tool = ({ navigation }) => {
       platform: platform,
       banType: null,
     };
-    console.log(playerOBJ);
+
     try {
       const response = await fetch(
         `https://api.pubg.com/shards/${platform}/players?filter[playerNames]=${ign}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${API_KEY}`, // 실제 API_KEY를 넣어주세요
+            Authorization: `Bearer ${API_KEY}`,
             Accept: "application/vnd.api+json",
           },
         }
@@ -55,7 +82,6 @@ const Tool = ({ navigation }) => {
       const data = await response.json();
 
       if (data.data && data.data.length > 0) {
-        console.log(data);
         let banType = data["data"][0]["attributes"]["banType"];
         if (banType == "Innocent") {
           banType = "해당 계정에 적용된 제재가 존재하지 않습니다.";
@@ -68,7 +94,7 @@ const Tool = ({ navigation }) => {
 
         setResult(playerOBJ);
       } else {
-        setPlayerData(null); // 데이터 없을 경우
+        setPlayerData(null);
       }
     } catch (error) {
       playerOBJ["banType"] = "존재하지 않는 계정입니다.";
@@ -123,7 +149,7 @@ const Tool = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Text style={styles.searchButtonText}>전적 조회</Text>
+            <Text style={styles.searchButtonText}>조회</Text>
           </TouchableOpacity>
         </View>
         {result && (
@@ -131,6 +157,62 @@ const Tool = ({ navigation }) => {
             <Text style={styles.resultText}>{result.banType}</Text>
           </View>
         )}
+        <Text
+          style={{
+            color: "white",
+            textAlign: "center",
+            fontFamily: "Pretendard-Bold",
+            fontSize: responsiveFontSize(20),
+            padding: responsiveWidth(10),
+            marginTop: responsiveHeight(5),
+            color: "white",
+            width: width * 0.9,
+          }}
+        >
+          PUBG Players Tour 랭킹
+        </Text>
+        <View
+          style={{
+            marginTop: responsiveHeight(5),
+            borderTopColor: "rgb(241,249,88)",
+            borderWidth: responsiveWidth(3),
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              textAlign: "center",
+              fontFamily: "Pretendard-Bold",
+              fontSize: responsiveFontSize(20),
+              padding: responsiveWidth(10),
+              color: "rgb(241,249,88)",
+              width: width * 0.9,
+            }}
+          >
+            TP랭킹
+          </Text>
+        </View>
+        <View style={styles.rankingContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: responsiveWidth(10),
+            }}
+          >
+            <Text style={styles.rtext}>Rank</Text>
+            <Text style={styles.ttext}>Team</Text>
+            <Text style={styles.ptext}>TP</Text>
+          </View>
+          <ScrollView contentContainerStyle={styles.rankingListContent}>
+            {rankingdata.map((item) => (
+              <View key={item.teamName} style={[styles.rankingItem]}>
+                <Text style={styles.rankText}>{item.rank}</Text>
+                <Text style={styles.teamText}>{item.teamName}</Text>
+                <Text style={styles.pointText}>{item.point}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -155,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(15),
   },
   resultContainer: {
-    backgroundColor: "#545454",
+    backgroundColor: "#171717",
     padding: responsiveWidth(10),
     borderRadius: responsiveWidth(10),
     alignItems: "center",
@@ -166,7 +248,6 @@ const styles = StyleSheet.create({
     fontFamily: "Pretendard-Bold",
     textAlign: "center",
     color: "white",
-    marginBottom: responsiveHeight(5),
   },
   subsubtitle: {
     color: "white",
@@ -177,7 +258,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     backgroundColor: "rgb(241,249,88)",
-    paddingVertical: responsiveHeight(10),
+    paddingVertical: responsiveHeight(5),
     paddingHorizontal: responsiveWidth(20),
     marginLeft: responsiveWidth(10),
     borderRadius: responsiveWidth(5),
@@ -208,8 +289,8 @@ const styles = StyleSheet.create({
 
   input: {
     textAlign: "center",
-    width: responsiveWidth(200),
-    height: responsiveHeight(45),
+    width: responsiveWidth(230),
+    height: responsiveHeight(30),
     borderColor: "rgb(241,249,88)",
     borderRadius: responsiveWidth(5),
     borderWidth: responsiveWidth(1),
@@ -217,7 +298,7 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: responsiveHeight(10),
     fontFamily: "Pretendard-Bold",
-    fontSize: responsiveFontSize(17),
+    fontSize: responsiveFontSize(15),
   },
   container: {
     flex: 1,
@@ -231,6 +312,69 @@ const styles = StyleSheet.create({
     fontFamily: "BrigendsExpanded",
     textAlign: "center",
     marginBottom: responsiveHeight(10),
+  },
+  rankingContainer: {
+    width: "100%",
+    height: height * 0.4,
+    overflow: "scroll",
+    backgroundColor: "rgb(241,241,241)",
+    padding: responsiveWidth(15),
+  },
+  rankingItem: {
+    // backgroundColor: "#545454",
+    padding: responsiveWidth(10),
+    borderBottomWidth: responsiveWidth(1),
+    borderBottomColor: "#ddd",
+    alignItems: "center",
+    flexDirection: "row",
+    width: "100%",
+  },
+  rankingText: {
+    color: "white",
+    fontFamily: "Pretendard-Regular",
+    fontSize: 14,
+  },
+  rtext: {
+    fontFamily: "Pretendard-Bold",
+    color: "#888",
+    width: "25%",
+
+    textAlign: "center",
+    fontSize: responsiveFontSize(15),
+  },
+  ttext: {
+    fontFamily: "Pretendard-Bold",
+    color: "#888",
+    width: "50%",
+    textAlign: "center",
+    fontSize: responsiveFontSize(15),
+  },
+  ptext: {
+    fontFamily: "Pretendard-Bold",
+    color: "#888",
+    width: "25%",
+    textAlign: "center",
+
+    fontSize: responsiveFontSize(15),
+  },
+  rankText: {
+    width: "25%",
+    fontSize: responsiveFontSize(18),
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  teamText: {
+    width: "50%",
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+  },
+  pointText: {
+    width: "25%",
+
+    fontSize: 16,
+    color: "#888",
+    textAlign: "center",
   },
 });
 

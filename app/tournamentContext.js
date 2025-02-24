@@ -9,9 +9,7 @@ const TournamentContext = createContext();
 export const TournamentProvider = ({ children }) => {
   const [tournamentsData, setTournamentsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    console.log("TournamentProvider Mounted!"); // ✅ Provider가 정상적으로 렌더링되는지 확인
-  }, []);
+
   // Firebase에서 토너먼트 데이터를 가져오는 함수
   const fetchTournaments = async () => {
     try {
