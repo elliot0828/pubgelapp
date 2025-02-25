@@ -274,6 +274,10 @@ const Tournaments = () => {
                           messaging.AuthorizationStatus.AUTHORIZED
                         ) {
                           await messaging().subscribeToTopic(topic);
+                          await AsyncStorage.setItem(
+                            "isAccepted",
+                            JSON.stringify(true)
+                          );
                           console.log("토너먼트 알림 구독됨");
                         } else {
                           setIsEnabled(false);

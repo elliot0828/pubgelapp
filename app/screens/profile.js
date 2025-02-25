@@ -132,7 +132,7 @@ const Profile = () => {
         <Carousel
           loop
           width={width}
-          height={responsiveHeight(260)}
+          height={responsiveHeight(245)}
           autoPlay={true}
           autoPlayInterval={3000}
           data={images}

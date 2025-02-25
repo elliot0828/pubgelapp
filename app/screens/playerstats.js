@@ -248,7 +248,7 @@ const PlayerStats = ({ route }) => {
                 <View
                   style={{
                     height: responsiveHeight(120),
-                    marginBottom: responsiveHeight(30),
+                    marginBottom: responsiveHeight(0),
                   }}
                 >
                   <View
@@ -478,16 +478,17 @@ const PlayerStats = ({ route }) => {
               <View style={styles.statsContainer}>
                 <View
                   style={{
-                    height: responsiveHeight(120),
+                    height: responsiveHeight(110),
                     paddingTop: responsiveHeight(20),
-                    marginBottom: responsiveHeight(40),
+                    marginBottom: responsiveHeight(20),
                   }}
                 >
                   <View
                     style={{
                       borderRadius: responsiveWidth(5),
                       flexDirection: "row",
-                      height: responsiveHeight(120),
+                      height: responsiveHeight(100),
+
                       alignItems: "center",
                       justifyContent: "center",
                     }}
@@ -528,7 +529,7 @@ const PlayerStats = ({ route }) => {
                         <View
                           style={{
                             flexDirection: "row",
-                            marginTop: responsiveHeight(5),
+                            marginBottom: responsiveHeight(15),
                           }}
                         >
                           <View style={stats.avgStatCon}>
@@ -1064,7 +1065,7 @@ const stats = StyleSheet.create({
     width: "65%",
     boxSizing: "border-box",
     backgroundColor: "#171717",
-    height: responsiveHeight(155),
+    height: responsiveHeight(125),
     borderTopRightRadius: responsiveWidth(10),
     borderBottomRightRadius: responsiveWidth(10),
     padding: responsiveWidth(10),
@@ -1134,7 +1135,7 @@ const rstats = StyleSheet.create({
     height: responsiveHeight(70),
   },
   combatCon: {
-    marginTop: responsiveHeight(10),
+    marginTop: responsiveHeight(5),
   },
   typeTitle: {
     color: "white",

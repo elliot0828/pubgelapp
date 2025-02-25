@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   image: { width: width * 0.2, height: undefined, aspectRatio: 1 / 1 }, // 이미지 크기
   title: {
     marginTop: responsiveWidth(5),
-    fontSize: responsiveFontSize(25),
+    fontSize: responsiveFontSize(30),
     fontWeight: "bold",
 
     fontFamily: "WinnerSans-CompBold",
@@ -271,14 +271,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "WinnerSans-CompBold",
     width: width,
-    fontSize: responsiveFontSize(20),
+    fontSize: responsiveFontSize(30),
   },
   descriptionL: {
     marginTop: responsiveHeight(5),
     fontFamily: "WinnerSans-CompBold",
     color: "white",
     width: width,
-    fontSize: responsiveFontSize(20),
+    fontSize: responsiveFontSize(30),
     paddingBottom: responsiveHeight(15),
   },
   descriptionLL: {
@@ -287,17 +287,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     color: "black",
     textAlign: "center",
-    fontSize: responsiveFontSize(16),
+    fontSize: responsiveFontSize(25),
   },
   descriptionLLL: {
     width: width * 0.9,
     fontFamily: "WinnerSans-CompBold",
     color: "white",
-    fontSize: responsiveFontSize(18),
+    fontSize: responsiveFontSize(30),
     marginTop: responsiveHeight(5),
   },
   titleW: {
-    fontSize: responsiveFontSize(25),
+    fontSize: responsiveFontSize(35),
     backgroundColor: "rgb(241,249,88)",
     fontWeight: "bold",
     textAlign: "center",
