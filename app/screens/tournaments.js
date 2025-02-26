@@ -367,9 +367,9 @@ const Tournaments = () => {
               keyExtractor={(item) => item.matchScheduleId}
               style={{
                 paddingBottom: responsiveHeight(30),
-                height: width,
+                height: width * 0.78,
               }}
-              contentContainerStyle={{ paddingBottom: responsiveHeight(50) }}
+              contentContainerStyle={{ paddingBottom: responsiveHeight(10) }}
             />
           ) : (
             <Text style={styles.noScheduleText}>
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveWidth(15),
     backgroundColor: "#1A1A1A",
     borderRadius: responsiveWidth(10),
-    marginBottom: responsiveHeight(15),
+    marginBottom: responsiveHeight(5),
     borderTopColor: "rgb(241,249,88)",
     borderTopWidth: responsiveHeight(2),
     alignItems: "center",

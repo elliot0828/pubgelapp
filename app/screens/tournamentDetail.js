@@ -255,7 +255,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
   },
-  image: { width: width * 0.2, height: undefined, aspectRatio: 1 / 1 }, // 이미지 크기
+  image: {
+    width: width * 0.2,
+    height: undefined,
+    aspectRatio: 1 / 1,
+    marginRight: responsiveWidth(5),
+  }, // 이미지 크기
   title: {
     marginTop: responsiveWidth(5),
     fontSize: responsiveFontSize(30),
