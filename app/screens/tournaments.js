@@ -85,6 +85,7 @@ const Tournaments = () => {
         selectedTextColor: "black",
       },
     });
+    console.log(selectedDate);
 
     setSelectedTournaments(
       tournamentsData.filter((t) => t.matchDate === selectedDate)
@@ -318,7 +319,7 @@ const Tournaments = () => {
       <View>
         <View>
           <Calendar
-            current={new Date().toISOString().split("T")[0]}
+            current={new Date().toLocaleDateString("sv-SE")}
             hideExtraDays={true}
             markedDates={markedDates}
             onDayPress={handleDayPress}
