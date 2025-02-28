@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   },
   rankText: {
     width: "25%",
-    fontSize: responsiveFontSize(18),
+    fontSize: responsiveFontSize(15),
     fontWeight: "bold",
     textAlign: "center",
   },
