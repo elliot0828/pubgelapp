@@ -14,7 +14,7 @@ import { collection, getDocs } from "firebase/firestore";
 const { width, height } = Dimensions.get("window");
 const { db } = initFirebase();
 import { useNavigation } from "@react-navigation/native";
-
+import strings from "../i18n";
 import responsiveSize from "../utils/responsiveSize";
 
 const { responsiveWidth, responsiveHeight, responsiveFontSize } =
@@ -51,7 +51,7 @@ const Gpt = ({ route }) => {
           }
 
           navigation.setOptions({
-            title: "팀 상세보기",
+            title: strings.teamInfo,
             headerStyle: {
               backgroundColor: "black", // 헤더 배경 색
             },
@@ -68,7 +68,7 @@ const Gpt = ({ route }) => {
   if (!gptdata) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>로딩 중...</Text>
+        <Text style={styles.title}>{strings.loading}...</Text>
       </SafeAreaView>
     );
   }
@@ -178,7 +178,7 @@ const Gpt = ({ route }) => {
                 fontSize: responsiveFontSize(15),
               }}
             >
-              팀 정보
+              {strings.teamInfo}
             </Text>
           </View>
         </View>
@@ -190,7 +190,7 @@ const Gpt = ({ route }) => {
               fontSize: responsiveFontSize(20),
             }}
           >
-            선수
+            {strings.player}
           </Text>
           {gptdata.players.map((player, index) => (
             <View

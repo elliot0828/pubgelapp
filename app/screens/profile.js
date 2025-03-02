@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 import responsiveSize from "../utils/responsiveSize";
-
+import strings from "../i18n";
 const { responsiveWidth, responsiveHeight, responsiveFontSize } =
   responsiveSize;
 const API_KEY =
@@ -24,11 +24,11 @@ const Profile = () => {
   const images = [
     {
       src: require("../../assets/images/statResult/normal.png"),
-      title: "일반전 전적 검색 예시",
+      title: `${strings.normal_e}`,
     },
     {
       src: require("../../assets/images/statResult/ranked.png"),
-      title: "경쟁전 전적 검색 예시",
+      title: `${strings.ranked_e}`,
     },
   ];
 
@@ -78,7 +78,7 @@ const Profile = () => {
             const num = lastestSeasonID - i;
             return {
               num,
-              text: `시즌 ${num}`,
+              text: `${strings.profileSeason} ${num}`,
               id: {
                 steam: `division.bro.official.pc-2018-${
                   num < 10 ? "0" + num : num
@@ -159,7 +159,7 @@ const Profile = () => {
             </View>
           )}
         />
-        <Text style={styles.platformTitle}>PUBG 플랫폼</Text>
+        <Text style={styles.platformTitle}>{strings.platform}</Text>
         <View style={styles.platformContainer}>
           {["steam", "kakao", "xbox", "psn"].map((plat) => (
             <TouchableOpacity
@@ -181,17 +181,17 @@ const Profile = () => {
             </TouchableOpacity>
           ))}
         </View>
-        <Text style={styles.ignTitle}>PUBG 닉네임</Text>
+        <Text style={styles.ignTitle}>{strings.ign}</Text>
         <TextInput
           placeholderTextColor="gray"
           style={styles.input}
           onPress={() => setNickname("")}
-          placeholder="PUBG 닉네임을 입력하세요. (대소문자 구분)"
+          placeholder={strings.ign_holder}
           value={ign}
           onChangeText={setNickname}
         />
         <TouchableOpacity style={styles.searchBTN} onPress={handleSearch}>
-          <Text style={styles.searchText}>전적 검색하기</Text>
+          <Text style={styles.searchText}>{strings.searchBTN}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

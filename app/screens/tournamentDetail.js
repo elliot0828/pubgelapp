@@ -20,6 +20,7 @@ const { db } = initFirebase();
 import { collection, getDocs } from "firebase/firestore";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import strings from "../i18n";
 const TournamentDetail = ({ route }) => {
   const navigation = useNavigation();
   const tournamentId = route.params.data.tournamentId;
@@ -53,7 +54,7 @@ const TournamentDetail = ({ route }) => {
           }
 
           navigation.setOptions({
-            title: "토너먼트 상세보기",
+            title: `${strings.tour_detail}`,
             headerStyle: {
               backgroundColor: "black", // 헤더 배경 색
             },
@@ -71,7 +72,7 @@ const TournamentDetail = ({ route }) => {
   if (!tournamentData) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>로딩 중...</Text>
+        <Text style={styles.title}>{strings.loading}...</Text>
       </SafeAreaView>
     );
   }
@@ -124,7 +125,7 @@ const TournamentDetail = ({ route }) => {
                       fontSize: responsiveFontSize(15),
                     }}
                   >
-                    정보
+                    {strings.tour_info}
                   </Text>
                 </View>
               </View>
@@ -136,7 +137,7 @@ const TournamentDetail = ({ route }) => {
                     fontFamily: "Pretendard-Bold",
                   }}
                 >
-                  일정
+                  {strings.tour_schedule}
                 </Text>
                 <Text
                   style={styles.descriptionLLL}
@@ -156,7 +157,7 @@ const TournamentDetail = ({ route }) => {
                     fontFamily: "Pretendard-Bold",
                   }}
                 >
-                  상금
+                  {strings.tour_prize}
                 </Text>
                 <Text
                   style={styles.description}
@@ -173,7 +174,7 @@ const TournamentDetail = ({ route }) => {
                     fontFamily: "Pretendard-Bold",
                   }}
                 >
-                  참가지역
+                  {strings.tour_region}
                 </Text>
                 <Text style={styles.description}>
                   {tournamentData.regionType
@@ -190,7 +191,7 @@ const TournamentDetail = ({ route }) => {
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  장소
+                  {strings.tour_place}
                 </Text>
                 <Text style={styles.descriptionL}>
                   {tournamentData.place ? tournamentData.place : "정보 없음"}
@@ -203,7 +204,6 @@ const TournamentDetail = ({ route }) => {
             style={{
               alignItems: "center",
               marginTop: 10,
-              // width: width,
               paddingHorizontal: responsiveWidth(15),
             }}
           >

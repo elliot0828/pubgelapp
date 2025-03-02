@@ -25,7 +25,7 @@ import moment from "moment";
 import { useFonts } from "expo-font";
 import TournamentContext from "../tournamentContext";
 const { width, height } = Dimensions.get("window");
-
+import strings from "../i18n";
 const Tournaments = () => {
   const { tournamentsData, loading } = useContext(TournamentContext);
 
@@ -351,7 +351,7 @@ const Tournaments = () => {
               marginRight: responsiveWidth(5),
             }}
           >
-            토너먼트 알림 받기
+            {strings.tournament_alert}
           </Text>
           <Switch
             trackColor={{ false: "#171717", true: "#171717" }}

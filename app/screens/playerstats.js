@@ -13,6 +13,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useFonts } from "expo-font";
+import strings from "../i18n";
 const API_KEY =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNTRiYTY1MC1lM2VhLTAxM2EtMWVjNy02YmM5MzNkNDQ3NzciLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjU3NjE0NjY1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymctc3RhdC1ib3QifQ.2rKXN9meNKkC88vG54GcneCFNTBteBFVFAUPgi7ca_0";
 
@@ -74,7 +75,7 @@ const PlayerStats = ({ route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: ign + "의 전적",
+      title: `${ign} ${strings.playerstatsTitle}`,
       headerStyle: {
         backgroundColor: "black", // 헤더 배경 색
       },
@@ -158,7 +159,7 @@ const PlayerStats = ({ route }) => {
         setOpen={setOpen}
         setValue={setSelectedSeason}
         setItems={setItems}
-        placeholder="시즌 선택"
+        placeholder={strings.seasonHolder}
         containerStyle={styles.dropdownContainer} // 외부 컨테이너 스타일
         dropDownContainerStyle={{
           backgroundColor: "rgba(52,52,52,1)", // 드롭다운 리스트 배경색
@@ -210,7 +211,7 @@ const PlayerStats = ({ route }) => {
                 : styles.deselectedButtonText
             }
           >
-            일반전
+            {strings.normal_b}
           </Text>
         </TouchableOpacity>
 
@@ -230,27 +231,9 @@ const PlayerStats = ({ route }) => {
                 : styles.deselectedButtonText
             }
           >
-            경쟁전
+            {strings.ranked_b}
           </Text>
         </TouchableOpacity>
-
-        {/* <TouchableOpacity
-          style={[
-            styles.button,
-            selectedGameMode === 'history'
-              ? styles.selectedButton
-              : styles.deselectedButton,
-          ]}
-          onPress={handleHistoryPress}>
-          <Text
-            style={
-              selectedGameMode === 'history'
-                ? styles.selectedButtonText
-                : styles.deselectedButtonText
-            }>
-            최근 매치
-          </Text>
-        </TouchableOpacity> */}
       </View>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ScrollView>
@@ -285,21 +268,27 @@ const PlayerStats = ({ route }) => {
                         }}
                       >
                         <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>승리</Text>
+                          <Text style={stats.avgStatTitle}>
+                            {strings.avgWin}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.normal.wins}
                           </Text>
                         </View>
 
                         <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>탑10</Text>
+                          <Text style={stats.avgStatTitle}>
+                            {strings.avgTop10}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.normal.top10s}
                           </Text>
                         </View>
 
                         <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>패배</Text>
+                          <Text style={stats.avgStatTitle}>
+                            {strings.avgLoss}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.normal.losses}
                           </Text>
@@ -308,21 +297,27 @@ const PlayerStats = ({ route }) => {
 
                       <View style={{ flexDirection: "row", height: "46%" }}>
                         <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>승리 확률</Text>
+                          <Text style={stats.avgStatTitle}>
+                            {strings.avgWinR}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.normal.winRatio}
                           </Text>
                         </View>
 
                         <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>탑10 확률</Text>
+                          <Text style={stats.avgStatTitle}>
+                            {strings.avgTop10R}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.normal.top10sRatio}
                           </Text>
                         </View>
 
                         <View style={stats.avgStatCon}>
-                          <Text style={stats.avgStatTitle}>총 매치</Text>
+                          <Text style={stats.avgStatTitle}>
+                            {strings.avgRound}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.normal.roundsPlayed}
                           </Text>
@@ -333,7 +328,7 @@ const PlayerStats = ({ route }) => {
                 </View>
                 <View style={stats.combatCon}>
                   <View style={stats.typeCon}>
-                    <Text style={stats.typeTitle}>전투</Text>
+                    <Text style={stats.typeTitle}>{strings.combat}</Text>
                   </View>
                   <View style={combat.con}>
                     <View style={{ flexDirection: "row" }}>
@@ -342,13 +337,13 @@ const PlayerStats = ({ route }) => {
                           <Text style={combat.sh}>
                             {playerData.stats.normal.kills}
                           </Text>
-                          <Text style={combat.th}>킬</Text>
+                          <Text style={combat.th}>{strings.kill}</Text>
                         </View>
                         <View style={combat.h}>
                           <Text style={combat.sh2}>
                             {playerData.stats.normal.avgDMG}
                           </Text>
-                          <Text style={combat.th2}>평균 데미지</Text>
+                          <Text style={combat.th2}>{strings.avgDMG}</Text>
                         </View>
                       </View>
                       <View style={combat.rcon}>
@@ -365,7 +360,7 @@ const PlayerStats = ({ route }) => {
                               playerData.stats.normal.roundsPlayed
                             ).toFixed(1)}
                           </Text>
-                          <Text style={combat.th2}>평균 킬</Text>
+                          <Text style={combat.th2}>{strings.avgKill}</Text>
                         </View>
                       </View>
                     </View>
@@ -375,25 +370,25 @@ const PlayerStats = ({ route }) => {
                       <Text style={long.sh3}>
                         {playerData.stats.normal.damageDealt.toFixed(2)}
                       </Text>
-                      <Text style={combat.th3}>데미지</Text>
+                      <Text style={combat.th3}>{strings.DMG}</Text>
                     </View>
                     <View style={combat.h3}>
                       <Text style={long.sh3}>
                         {playerData.stats.normal.dBNOs}
                       </Text>
-                      <Text style={combat.th3}>기절</Text>
+                      <Text style={combat.th3}>{strings.DBNO}</Text>
                     </View>
                     <View style={combat.h3}>
                       <Text style={long.sh3}>
                         {playerData.stats.normal.assists}
                       </Text>
-                      <Text style={combat.th3}>어시스트</Text>
+                      <Text style={combat.th3}>{strings.assist}</Text>
                     </View>
                   </View>
                 </View>
                 <View style={stats.combatCon}>
                   <View style={stats.typeCon}>
-                    <Text style={stats.typeTitle}>매치 운영</Text>
+                    <Text style={stats.typeTitle}>{strings.match}</Text>
                   </View>
                   <View style={run.con}>
                     <View style={{ flexDirection: "row" }}>
@@ -402,19 +397,19 @@ const PlayerStats = ({ route }) => {
                           <Text style={run.lsh}>
                             {playerData.stats.normal.revives}
                           </Text>
-                          <Text style={run.lth}>회복</Text>
+                          <Text style={run.lth}>{strings.revive}</Text>
                         </View>
                         <View style={run.h}>
                           <Text style={run.lsh2}>
                             {playerData.stats.normal.heals}
                           </Text>
-                          <Text style={run.lth2}>치유</Text>
+                          <Text style={run.lth2}>{strings.heal}</Text>
                         </View>
                         <View style={run.hc}>
                           <Text style={run.lsh2}>
                             {playerData.stats.normal.boosts}
                           </Text>
-                          <Text style={run.lth2}>부스트</Text>
+                          <Text style={run.lth2}>{strings.boost}</Text>
                         </View>
                       </View>
                       <View style={combat.rcon}>
@@ -422,19 +417,19 @@ const PlayerStats = ({ route }) => {
                           <Text style={long.fshD}>
                             {playerData.stats.normal.walkDistance}
                           </Text>
-                          <Text style={combat.th}>걸은 거리</Text>
+                          <Text style={combat.th}>{strings.walkD}</Text>
                         </View>
                         <View style={combat.h}>
                           <Text style={long.shD}>
                             {playerData.stats.normal.rideDistance}
                           </Text>
-                          <Text style={combat.th2}>이동수단 탑승한 거리</Text>
+                          <Text style={combat.th2}>{strings.rideD}</Text>
                         </View>
                         <View style={run.h}>
                           <Text style={long.shD}>
                             {playerData.stats.normal.swimDistance}
                           </Text>
-                          <Text style={combat.th2}>수영한 거리</Text>
+                          <Text style={combat.th2}>{strings.swimD}</Text>
                         </View>
                       </View>
                     </View>
@@ -442,7 +437,7 @@ const PlayerStats = ({ route }) => {
                 </View>
                 <View style={stats.combatCon}>
                   <View style={stats.typeCon}>
-                    <Text style={stats.typeTitle}>기록</Text>
+                    <Text style={stats.typeTitle}>{strings.record}</Text>
                   </View>
                   <View style={combat.con}>
                     <View style={{ flexDirection: "row" }}>
@@ -451,13 +446,13 @@ const PlayerStats = ({ route }) => {
                           <Text style={combat.sh}>
                             {playerData.stats.normal.headshotKills}
                           </Text>
-                          <Text style={combat.th}>헤드샷 킬</Text>
+                          <Text style={combat.th}>{strings.headshotKill}</Text>
                         </View>
                         <View style={run.h}>
                           <Text style={combat.sh2}>
                             {playerData.stats.normal.longestKill}
                           </Text>
-                          <Text style={combat.th2}>최장거리 킬</Text>
+                          <Text style={combat.th2}>{strings.longestKill}</Text>
                         </View>
                       </View>
                       <View style={combat.rcon}>
@@ -465,13 +460,15 @@ const PlayerStats = ({ route }) => {
                           <Text style={long.sshD}>
                             {playerData.stats.normal.timeSurvived}
                           </Text>
-                          <Text style={combat.th}>생존시간</Text>
+                          <Text style={combat.th}>{strings.timeSurvived}</Text>
                         </View>
                         <View style={run.h}>
                           <Text style={long.shD}>
                             {playerData.stats.normal.longestTimeSurvived}
                           </Text>
-                          <Text style={combat.th2}>최장 생존시간 </Text>
+                          <Text style={combat.th2}>
+                            {strings.longestTimeSurvived}
+                          </Text>
                         </View>
                       </View>
                     </View>
@@ -518,21 +515,27 @@ const PlayerStats = ({ route }) => {
                       </View>
                       <View style={{ flexDirection: "row", marginTop: 5 }}>
                         <View style={stats.avgStatCon}>
-                          <Text style={rstats.avgStatTitle}>승리</Text>
+                          <Text style={rstats.avgStatTitle}>
+                            {strings.avgWin}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.ranked.wins}
                           </Text>
                         </View>
 
                         <View style={stats.avgStatCon}>
-                          <Text style={rstats.avgStatTitle}>승리 확률</Text>
+                          <Text style={rstats.avgStatTitle}>
+                            {strings.avgWinR}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.ranked.winRatio}
                           </Text>
                         </View>
 
                         <View style={stats.avgStatCon}>
-                          <Text style={rstats.avgStatTitle}>총 매치</Text>
+                          <Text style={rstats.avgStatTitle}>
+                            {strings.avgRound}
+                          </Text>
                           <Text style={stats.avgStatText}>
                             {playerData.stats.ranked.roundsPlayed}
                           </Text>
@@ -543,7 +546,7 @@ const PlayerStats = ({ route }) => {
                 </View>
                 <View style={stats.combatCon}>
                   <View style={stats.typeCon}>
-                    <Text style={stats.typeTitle}>전투</Text>
+                    <Text style={stats.typeTitle}>{strings.combat}</Text>
                   </View>
                   <View style={combat.con}>
                     <View style={{ flexDirection: "row" }}>
@@ -552,13 +555,13 @@ const PlayerStats = ({ route }) => {
                           <Text style={combat.sh}>
                             {playerData.stats.ranked.kills}
                           </Text>
-                          <Text style={combat.th}>킬</Text>
+                          <Text style={combat.th}>{strings.kill}</Text>
                         </View>
                         <View style={combat.h}>
                           <Text style={combat.sh2}>
                             {playerData.stats.ranked.avgDMG}
                           </Text>
-                          <Text style={combat.th2}>평균 데미지</Text>
+                          <Text style={combat.th2}>{strings.avgDMG}</Text>
                         </View>
                       </View>
                       <View style={combat.rcon}>
@@ -580,7 +583,7 @@ const PlayerStats = ({ route }) => {
                                   playerData.stats.ranked.roundsPlayed
                                 ).toFixed(1)}
                           </Text>
-                          <Text style={combat.th2}>평균 킬</Text>
+                          <Text style={combat.th2}>{strings.avgKill}</Text>
                         </View>
                       </View>
                     </View>
@@ -590,52 +593,22 @@ const PlayerStats = ({ route }) => {
                       <Text style={long.sh3}>
                         {playerData.stats.ranked.damageDealt.toFixed(2)}
                       </Text>
-                      <Text style={combat.th3}>데미지</Text>
+                      <Text style={combat.th3}>{strings.DMG}</Text>
                     </View>
                     <View style={combat.h3}>
                       <Text style={long.sh3}>
                         {playerData.stats.ranked.dBNOs}
                       </Text>
-                      <Text style={combat.th3}>기절</Text>
+                      <Text style={combat.th3}>{strings.DBNO}</Text>
                     </View>
                     <View style={combat.h3}>
                       <Text style={long.sh3}>
                         {playerData.stats.ranked.assists}
                       </Text>
-                      <Text style={combat.th3}>어시스트</Text>
+                      <Text style={combat.th3}>{strings.assist}</Text>
                     </View>
                   </View>
-                  {/* <View
-                  style={{
-                    backgroundColor: 'rgb(241,249,88)',
-                    borderRadius: 10,
-                    flexDirection: 'row',
-                  }}>
-                  <View style={rstats.h3}>
-                    <Text style={rstats.sh3}>
-                      {playerData.stats.ranked.revives}
-                    </Text>
-                    <Text style={rstats.th3}>회복</Text>
-                  </View>
-                  <View style={rstats.h3}>
-                    <Text style={rstats.sh3}>
-                      {playerData.stats.ranked.heals}
-                    </Text>
-                    <Text style={rstats.th3}>치유</Text>
-                  </View>
-                  <View style={rstats.h3}>
-                    <Text style={rstats.sh3}>
-                      {playerData.stats.ranked.boosts}
-                    </Text>
-                    <Text style={rstats.th3}>부스트</Text>
-                  </View>
-                </View> */}
                 </View>
-              </View>
-            ) : selectedGameMode === "history" ? (
-              // 최근 매치 전적 (예시)
-              <View style={styles.statsContainer}>
-                <Text style={styles.statText}>최근매치나옵니다</Text>
               </View>
             ) : (
               // 기본 상태: 선택된 모드가 없을 때
@@ -743,8 +716,9 @@ async function getData(obj) {
   nTotal["swimDistance"] = (nTotal["swimDistance"] / 1000).toFixed(1) + "KM";
   nTotal["walkDistance"] = (nTotal["walkDistance"] / 1000).toFixed(1) + "KM";
   nTotal["longestTimeSurvived"] =
-    (nTotal["longestTimeSurvived"] / 60).toFixed(1) + "분";
-  nTotal["timeSurvived"] = (nTotal["timeSurvived"] / 60).toFixed(1) + "분";
+    (nTotal["longestTimeSurvived"] / 60).toFixed(1) + strings.time;
+  nTotal["timeSurvived"] =
+    (nTotal["timeSurvived"] / 60).toFixed(1) + strings.time;
 
   nTotal["kda"] = (
     (nTotal["kills"] + nTotal["assists"]) /
@@ -820,7 +794,7 @@ const long = StyleSheet.create({
   sshD: {
     // marginTop: 13,
     color: "rgb(241,249,88)",
-    fontSize: 32,
+    fontSize: 35,
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",
@@ -835,7 +809,7 @@ const long = StyleSheet.create({
   },
   shD: {
     color: "rgb(241,249,88)",
-    fontSize: 25,
+    fontSize: 28,
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "WinnerSans-CompBold",

@@ -11,6 +11,7 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
+import strings from "../i18n";
 import responsiveSize from "../utils/responsiveSize";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import initFirebase from "../firebase";
@@ -84,11 +85,11 @@ const Tool = ({ navigation }) => {
       if (data.data && data.data.length > 0) {
         let banType = data["data"][0]["attributes"]["banType"];
         if (banType == "Innocent") {
-          banType = "해당 계정에 적용된 제재가 존재하지 않습니다.";
+          banType = `${strings.innocent}`;
         } else if (banType == "TemporaryBan") {
-          banType = "임시 제재 조치된 계정입니다.";
+          banType = `${strings.temporary}`;
         } else if (banType == "PermanentBan") {
-          banType = "영구 제재 조치된 계정입니다.";
+          banType = `${strings.permanent}`;
         }
         playerOBJ["banType"] = banType;
 
@@ -97,7 +98,7 @@ const Tool = ({ navigation }) => {
         setPlayerData(null);
       }
     } catch (error) {
-      playerOBJ["banType"] = "존재하지 않는 계정입니다.";
+      playerOBJ["banType"] = `${strings.exist}`;
       setResult(playerOBJ);
     } finally {
       setResult(playerOBJ);
@@ -107,8 +108,8 @@ const Tool = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>PUBG Tool</Text>
-        <Text style={styles.subtitle}>계정 제재 확인</Text>
-        <Text style={styles.subsubtitle}>PUBG 플랫폼 선택</Text>
+        <Text style={styles.subtitle}>{strings.accountCheck}</Text>
+        <Text style={styles.subsubtitle}>{strings.accountPlatform}</Text>
         <View style={styles.platformButtonsContainer}>
           {["STEAM", "KAKAO", "XBOX", "PSN"].map((platformOption) => (
             <TouchableOpacity
@@ -131,7 +132,7 @@ const Tool = ({ navigation }) => {
           ))}
         </View>
 
-        <Text style={styles.subsubtitle}>PUBG 닉네임</Text>
+        <Text style={styles.subsubtitle}>{strings.accountIgn}</Text>
         <View
           style={{
             flexDirection: "row",
@@ -141,7 +142,7 @@ const Tool = ({ navigation }) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="닉네임을 입력하세요. (대소문자 구분)"
+              placeholder={strings.ign_holder}
               placeholderTextColor="gray"
               onChangeText={(text) => setIgn(text)}
               onPress={() => setIgn("")}
@@ -149,7 +150,7 @@ const Tool = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Text style={styles.searchButtonText}>조회</Text>
+            <Text style={styles.searchButtonText}>{strings.accountBTN}</Text>
           </TouchableOpacity>
         </View>
         {result && (
@@ -169,7 +170,7 @@ const Tool = ({ navigation }) => {
             width: width * 0.9,
           }}
         >
-          PUBG Players Tour 랭킹
+          {strings.pptR}
         </Text>
         <View
           style={{
@@ -189,7 +190,7 @@ const Tool = ({ navigation }) => {
               width: width * 0.9,
             }}
           >
-            TP랭킹
+            {strings.tpR}
           </Text>
         </View>
         <View style={styles.rankingContainer}>

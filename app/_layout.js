@@ -20,8 +20,7 @@ import Esports from "./screens/esports";
 import PlayerStats from "./screens/playerstats";
 import Tournaments from "./screens/tournaments";
 import tournamentDetail from "./screens/tournamentDetail";
-import { faL } from "@fortawesome/free-solid-svg-icons";
-
+import strings from "./i18n";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -41,7 +40,7 @@ const TabNavigator = () => {
       <StatusBar barStyle="light-content" backgroundColor="#000" />
       <TournamentProvider>
         <Tab.Navigator
-          initialRouteName="홈"
+          initialRouteName={strings.home}
           screenOptions={{
             tabBarStyle: {
               backgroundColor: "black",
@@ -52,7 +51,7 @@ const TabNavigator = () => {
           }}
         >
           <Tab.Screen
-            name="홈"
+            name={strings.home}
             component={Esports}
             options={{
               headerShown: false,
@@ -63,7 +62,7 @@ const TabNavigator = () => {
           />
 
           <Tab.Screen
-            name="토너먼트"
+            name={strings.tournament}
             component={Tournaments}
             options={{
               headerShown: false,
@@ -74,7 +73,7 @@ const TabNavigator = () => {
           />
 
           <Tab.Screen
-            name="전적"
+            name={strings.stat}
             component={Profile}
             options={{
               headerShown: false,
@@ -84,7 +83,7 @@ const TabNavigator = () => {
             }}
           />
           <Tab.Screen
-            name="도구"
+            name={strings.tool}
             component={Tool}
             options={{
               headerShown: false,
@@ -109,6 +108,7 @@ const App = () => {
     "Pretendard-Bold": require("../assets/fonts/Pretendard-Bold.otf"),
     BrigendsExpanded: require("../assets/fonts/BrigendsExpanded.otf"),
   });
+
   async function requestPermission() {
     const authStatus = await messaging().hasPermission();
     const isAccepted = JSON.parse(await AsyncStorage.getItem("isAccepted"));
@@ -229,7 +229,7 @@ const MainApp = () => {
     <TournamentProvider>
       <Stack.Navigator>
         <Stack.Screen
-          name="돌아가기"
+          name={strings.return}
           component={TabNavigator}
           options={{
             headerShown: false,
@@ -241,7 +241,6 @@ const MainApp = () => {
           options={{
             headerStyle: {
               backgroundColor: "black",
-              title: "팀 상세보기",
             },
             headerTintColor: "rgb(241,249,88)",
           }}
@@ -252,7 +251,6 @@ const MainApp = () => {
           options={{
             headerStyle: {
               backgroundColor: "black",
-              title: "토너먼트 상세보기",
             },
             headerTintColor: "rgb(241,249,88)",
           }}

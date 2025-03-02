@@ -24,6 +24,12 @@ import {
   responsiveWidth,
 } from "../utils/responsiveSize";
 const { db } = initFirebase();
+import strings from "../i18n";
+import * as Localization from "expo-localization";
+// 현재 언어 확인
+const deviceLocale = Localization.locale.split("-")[0];
+
+// 폰트 설정
 
 const Esports = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -40,11 +46,15 @@ const Esports = ({ navigation }) => {
   const [rankingdata, setrankingData] = useState([]);
   const [gptdata, setgptData] = useState([]);
   const [ytdata, setytData] = useState([]);
-
+  const changeFont =
+    deviceLocale === "ko" ? "Pretendard-Bold" : "BrigendsExpanded";
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const esportsQuery = await getDocs(collection(db, "esportsNews"));
+        const esportsQuery = await getDocs(
+          collection(db, `${strings.esportsNews}`)
+        );
+
         if (esportsQuery.empty) {
           console.log("이스포츠 데이터가 없습니다.");
         } else {
@@ -84,7 +94,7 @@ const Esports = ({ navigation }) => {
 
         const ytQuery = await getDocs(
           query(
-            collection(db, "esportsVideo"),
+            collection(db, `${strings.esportsVideo}`),
             orderBy("publishedAt", "desc"),
             limit(5)
           )
@@ -121,7 +131,14 @@ const Esports = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContainer,
+          deviceLocale === "ko"
+            ? { paddingBottom: responsiveHeight(50) }
+            : { paddingBottom: responsiveHeight(10) },
+        ]}
+      >
         <View>
           <Text
             style={{
@@ -207,14 +224,14 @@ const Esports = ({ navigation }) => {
             style={{
               color: "white",
               textAlign: "center",
-              fontFamily: "Pretendard-Bold",
+              fontFamily: changeFont,
               fontSize: responsiveFontSize(20),
               padding: responsiveWidth(10),
               color: "rgb(241,249,88)",
               width: width * 0.9,
             }}
           >
-            파워랭킹
+            {strings.esports_powerRanking}
           </Text>
         </View>
         <View
@@ -264,20 +281,20 @@ const Esports = ({ navigation }) => {
             style={{
               color: "white",
               textAlign: "center",
-              fontFamily: "Pretendard-Bold",
-              marginTop: responsiveHeight(15),
+              fontFamily: changeFont,
+              marginTop: responsiveHeight(10),
               fontSize: 25,
               color: "rgb(241,249,88)",
             }}
           >
-            미디어
+            {strings.esports_media}
           </Text>
         </View>
         <Carousel
           style={{ marginTop: 10, marginBottom: 0 }}
           loop
           width={width * 0.9}
-          height={width * 0.54}
+          height={width * 0.53}
           autoPlay={true}
           autoPlayInterval={2000}
           data={ytdata}
@@ -310,11 +327,7 @@ const Esports = ({ navigation }) => {
         <View style={styles.snscontainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() =>
-              Linking.openURL(
-                "https://www.youtube.com/channel/UCAl4HWznMn7KhKBRFO5eiFA"
-              )
-            }
+            onPress={() => Linking.openURL(`${strings.esports_yL}`)}
           >
             <Image
               source={require("../../assets/images/sns/youtube.png")}
@@ -323,9 +336,7 @@ const Esports = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() =>
-              Linking.openURL("https://www.instagram.com/pubgesports_kr")
-            }
+            onPress={() => Linking.openURL(`${strings.esports_iL}`)}
           >
             <Image
               source={require("../../assets/images/sns/instagram.png")}
@@ -334,7 +345,7 @@ const Esports = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => Linking.openURL("https://x.com/PUBGEsports_KR")}
+            onPress={() => Linking.openURL(`${strings.esports_tL}`)}
           >
             <Image
               source={require("../../assets/images/sns/twitter.png")}
@@ -343,24 +354,26 @@ const Esports = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <TouchableOpacity
-        onPress={() => Linking.openURL("https://www.pubgplayerstour.kr/")}
-        style={styles.fixedButton}
-      >
-        <ImageBackground
-          source={{
-            uri: "https://v1.padlet.pics/3/image.webp?t=c_limit%2Cdpr_2%2Ch_215%2Cw_1027&url=https%3A%2F%2Fu1.padletusercontent.com%2Fuploads%2Fpadlet-uploads%2F1711091133%2F0dbdf64cd60d11810049d767f9e0a6ea%2Fpubg_deston_new_map_3_4.jpg%3Fexpiry_token%3D5WaHZRdGG3LkUVQGy3SZ-zdRtq89aJeottSBaF_Hii8EGDVBG-vnLc5ZfL_2GiKosWMOCkHArMcc8LorETHcZ0EQapAzf-1EUkH200RSJK6rnLR9uEkIRzaa1WbMw40_mOCjXQG4BBMy7fJqeeyvIohnKrt8ycetCZ50YhU7n0w_Kldzinwx-IMRRVFtq1RddQsmvFr2S-kMJOylt55NXK43jPSikcI_HFrBkG37Ikc%3Dr",
-          }}
-          style={styles.backgroundImage}
-          resizeMode="cover"
+      {deviceLocale === "ko" ? (
+        <TouchableOpacity
+          onPress={() => Linking.openURL("https://www.pubgplayerstour.kr/")}
+          style={styles.fixedButton}
         >
-          <View style={styles.overlay}>
-            <Text style={styles.buttonText}>
-              PUBG 플레이어스 투어에 참여하세요!
-            </Text>
-          </View>
-        </ImageBackground>
-      </TouchableOpacity>
+          <ImageBackground
+            source={{
+              uri: "https://v1.padlet.pics/3/image.webp?t=c_limit%2Cdpr_2%2Ch_215%2Cw_1027&url=https%3A%2F%2Fu1.padletusercontent.com%2Fuploads%2Fpadlet-uploads%2F1711091133%2F0dbdf64cd60d11810049d767f9e0a6ea%2Fpubg_deston_new_map_3_4.jpg%3Fexpiry_token%3D5WaHZRdGG3LkUVQGy3SZ-zdRtq89aJeottSBaF_Hii8EGDVBG-vnLc5ZfL_2GiKosWMOCkHArMcc8LorETHcZ0EQapAzf-1EUkH200RSJK6rnLR9uEkIRzaa1WbMw40_mOCjXQG4BBMy7fJqeeyvIohnKrt8ycetCZ50YhU7n0w_Kldzinwx-IMRRVFtq1RddQsmvFr2S-kMJOylt55NXK43jPSikcI_HFrBkG37Ikc%3Dr",
+            }}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+          >
+            <View style={styles.overlay}>
+              <Text style={styles.buttonText}>
+                PUBG 플레이어스 투어에 참여하세요!
+              </Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -374,7 +387,6 @@ const styles = StyleSheet.create({
   scrollContainer: {
     alignItems: "center",
     paddingTop: 0,
-    paddingBottom: responsiveHeight(50),
   },
   slide: {
     borderRadius: responsiveWidth(10),
@@ -430,9 +442,9 @@ const styles = StyleSheet.create({
   tableCell: {
     width: "20%",
     borderWidth: responsiveWidth(1),
-    borderColor: "#545454",
+    borderColor: "#ddd",
     borderWidth: responsiveWidth(1),
-    backgroundColor: "#171717",
+    backgroundColor: "rgb(243,243,243)",
     padding: responsiveWidth(5),
     alignItems: "center",
     justifyContent: "center",
