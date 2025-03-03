@@ -12,6 +12,12 @@
   "tour_place": "장소",
   "tour_info": "정보",
   "tour_detail": "토너먼트 상세보기",
+  "tour_Watch": "보러가기",
+  "tour_aTitle": "알림 권한이 필요합니다.",
+  "tour_aBody": "설정에서 알림을 허용해주세요.",
+  "network_aTitle": "네트워크 연결 오류",
+  "network_aBody": "네트워크 연결을 확인하고 앱을 재시작해 주세요.",
+  "confirm": "확인",
   "return": "돌아가기",
   "home": "홈",
   "tournament": "토너먼트",
@@ -66,5 +72,7 @@
   "accountIgn": "PUBG 닉네임",
   "accountBTN": "조회",
   "pptR": "PUBG Players Tour 랭킹",
-  "tpR": "TP랭킹"
+  "tpR": "TP랭킹",
+  "alertTitle": "토너먼트 시작 알림",
+  "alertBody": "경기가 곧 시작됩니다!"
 }

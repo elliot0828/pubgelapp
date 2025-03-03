@@ -11,7 +11,13 @@
   "tour_region": "Region",
   "tour_place": "Venue",
   "tour_info": "Info",
-  "tour_detail": "Tour Info",
+  "tour_detail": "Tournament Info",
+  "tour_Watch": "Watch",
+  "tour_aTitle": "Notification Permission Is Required.",
+  "tour_aBody": "Please Enable Notifications In Settings.",
+  "network_aTitle": "Network Connection Error",
+  "network_aBody": "Please Check Network Connection And Restart The App.",
+  "confirm": "Confirm",
   "return": "Return",
   "home": "HOME",
   "tournament": "TOURNAMENT",
@@ -67,5 +73,7 @@
   "accountIgn": "PUBG IGN",
   "accountBTN": "CHECK",
   "pptR": "PUBG Players Tour RANKIGS",
-  "tpR": "TP RANKINGS"
+  "tpR": "TP RANKINGS",
+  "alertTitle": "Tournament Notification",
+  "alertBody": "Starts Soon!"
 }

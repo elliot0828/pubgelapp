@@ -160,8 +160,8 @@ const App = () => {
 
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: title || "알림",
-          body: body || "새로운 메시지가 도착했습니다.",
+          title: `${strings.alertTitle}`,
+          body: `${body} ${strings.alertBody}`,
         },
         trigger: null,
       });
@@ -177,11 +177,11 @@ const App = () => {
         const networkState = await Network.getNetworkStateAsync();
         if (!networkState.isConnected) {
           Alert.alert(
-            "네트워크 연결 오류",
-            "네트워크 연결을 확인하고 앱을 재시작해 주세요.",
+            `${strings.network_aTitle}`,
+            `${strings.network_aBody}`,
             [
               {
-                text: "확인",
+                text: `${strings.confirm}`,
                 onPress: () => {
                   getNetworkState();
                 },

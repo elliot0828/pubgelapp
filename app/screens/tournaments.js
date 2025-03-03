@@ -195,7 +195,7 @@ const Tournaments = () => {
                 fontFamily: "Pretendard-Bold",
               }}
             >
-              보러가기
+              {strings.tour_Watch}
             </Text>
           </TouchableOpacity>
         </View>
@@ -250,47 +250,43 @@ const Tournaments = () => {
         const permissionStatus = await messaging().hasPermission();
         if (permissionStatus !== messaging.AuthorizationStatus.AUTHORIZED) {
           console.log("알림 권한 요청 중...");
-          Alert.alert(
-            "알림 권한이 필요합니다.",
-            "설정에서 알림을 허용해주세요.",
-            [
-              {
-                text: "취소",
-                style: "cancel",
-                onPress: () => setIsEnabled(false),
-              },
-              {
-                text: "설정으로 이동",
-                onPress: () => {
-                  Linking.openSettings();
+          Alert.alert(`${strings.tour_aTitle}`, `${strings.tour_aBody}`, [
+            {
+              text: "취소",
+              style: "cancel",
+              onPress: () => setIsEnabled(false),
+            },
+            {
+              text: "설정으로 이동",
+              onPress: () => {
+                Linking.openSettings();
 
-                  const subscription = AppState.addEventListener(
-                    "change",
-                    async (nextAppState) => {
-                      if (nextAppState === "active") {
-                        const updatedPermission =
-                          await messaging().hasPermission();
-                        if (
-                          updatedPermission ===
-                          messaging.AuthorizationStatus.AUTHORIZED
-                        ) {
-                          await messaging().subscribeToTopic(topic);
-                          await AsyncStorage.setItem(
-                            "isAccepted",
-                            JSON.stringify(true)
-                          );
-                          console.log("토너먼트 알림 구독됨");
-                        } else {
-                          setIsEnabled(false);
-                        }
-                        subscription.remove();
+                const subscription = AppState.addEventListener(
+                  "change",
+                  async (nextAppState) => {
+                    if (nextAppState === "active") {
+                      const updatedPermission =
+                        await messaging().hasPermission();
+                      if (
+                        updatedPermission ===
+                        messaging.AuthorizationStatus.AUTHORIZED
+                      ) {
+                        await messaging().subscribeToTopic(topic);
+                        await AsyncStorage.setItem(
+                          "isAccepted",
+                          JSON.stringify(true)
+                        );
+                        console.log("토너먼트 알림 구독됨");
+                      } else {
+                        setIsEnabled(false);
                       }
+                      subscription.remove();
                     }
-                  );
-                },
+                  }
+                );
               },
-            ]
-          );
+            },
+          ]);
         }
         await messaging().subscribeToTopic(topic);
       } else {
