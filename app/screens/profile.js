@@ -19,7 +19,7 @@ import strings from "../i18n";
 const { responsiveWidth, responsiveHeight, responsiveFontSize } =
   responsiveSize;
 const API_KEY =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNTRiYTY1MC1lM2VhLTAxM2EtMWVjNy02YmM5MzNkNDQ3NzciLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjU3NjE0NjY1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InB1Ymctc3RhdC1ib3QifQ.2rKXN9meNKkC88vG54GcneCFNTBteBFVFAUPgi7ca_0";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlYTU4NzE5MC0xYmZlLTAxM2MtOGM0Mi0wNmEwODIyNTEzYWQiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjkxOTI4MDI2LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii0yOTEyNDU0OC03OTVmLTQzYmItYmRlMi1mYjkxYjM3NWNhMmUifQ.Z8v6NPvr7ee_coJvrxJ6oIUsmD0GVCiOU-NIavOWCG8";
 const Profile = () => {
   const images = [
     {
